@@ -21,7 +21,11 @@
             <a href="contact.html" class="active" aria-current="page">Contact</a>
             <a href="#" id="orders-link" class="cart-link" aria-haspopup="dialog">Orders<span class="cart-badge" id="cart-badge">0</span></a>
         </nav>
-        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">&#9776;</button>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
+        </button>
     </header>
     <!--Contact-form-section-->
     <section class="contact-section">
@@ -77,9 +81,110 @@
         </div>
     </div>
 
-    <!-- Step 2: delivery details -->
+    <!-- Step 2: payment method -->
+    <div class="payment-method-view" id="payment-method-view" hidden>
+        <button type="button" class="cart-back-btn" id="payment-back-btn">&larr; Back to order</button>
+        <h3 class="cart-step-heading">How would you like to pay?</h3>
+        <p class="cart-step-total" id="payment-method-total"></p>
+        <div class="payment-options">
+            <button type="button" class="payment-option" id="pay-delivery-btn">
+                <span class="payment-option-icon" aria-hidden="true">&#128181;</span>
+                <span class="payment-option-text">
+                    <strong>Pay on Delivery</strong>
+                    <small>Cash or card handed to the rider</small>
+                </span>
+                <span class="payment-option-arrow" aria-hidden="true">&rsaquo;</span>
+            </button>
+            <button type="button" class="payment-option" id="pay-card-btn">
+                <span class="payment-option-icon" aria-hidden="true">&#128179;</span>
+                <span class="payment-option-text">
+                    <strong>Pay by Card</strong>
+                    <small>Secure checkout, verified instantly</small>
+                </span>
+                <span class="payment-option-arrow" aria-hidden="true">&rsaquo;</span>
+            </button>
+            <button type="button" class="payment-option" id="pay-transfer-btn">
+                <span class="payment-option-icon" aria-hidden="true">&#127974;</span>
+                <span class="payment-option-text">
+                    <strong>Pay by Bank Transfer</strong>
+                    <small>We hold your order 30 minutes</small>
+                </span>
+                <span class="payment-option-arrow" aria-hidden="true">&rsaquo;</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Step 3a: card payment -->
+    <div class="card-payment-view" id="card-payment-view" hidden>
+        <button type="button" class="cart-back-btn" id="card-back-btn">&larr; Back to payment options</button>
+        <h3 class="cart-step-heading">Card details</h3>
+        <form id="card-payment-form" novalidate>
+            <label for="card-name">Name on card</label>
+            <input type="text" id="card-name" autocomplete="cc-name" placeholder="Jane Doe" required>
+
+            <label for="card-number">Card number</label>
+            <input type="text" id="card-number" inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456" maxlength="19" required>
+
+            <div class="card-row">
+                <div>
+                    <label for="card-expiry">Expiry</label>
+                    <input type="text" id="card-expiry" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" maxlength="5" required>
+                </div>
+                <div>
+                    <label for="card-cvv">CVV</label>
+                    <input type="text" id="card-cvv" inputmode="numeric" autocomplete="cc-csc" placeholder="123" maxlength="4" required>
+                </div>
+            </div>
+
+            <p class="field-error" id="card-error" hidden></p>
+
+            <div class="checkout-recap" id="card-recap"></div>
+            <button type="submit" class="btn2 cart-checkout-btn" id="card-pay-btn">
+                <span id="card-pay-btn-text">Pay</span>
+            </button>
+            <p class="secure-note">&#128274; Payments are encrypted and secure.</p>
+        </form>
+    </div>
+
+    <!-- Step 3b: bank transfer -->
+    <div class="transfer-view" id="transfer-view" hidden>
+        <button type="button" class="cart-back-btn" id="transfer-back-btn">&larr; Back to payment options</button>
+        <h3 class="cart-step-heading">Bank transfer details</h3>
+        <div class="transfer-details">
+            <div class="transfer-row">
+                <span>Bank name</span>
+                <strong>Crumb Trust Bank</strong>
+            </div>
+            <div class="transfer-row">
+                <span>Account name</span>
+                <strong>Sweet Crumbs Bakery Ltd</strong>
+            </div>
+            <div class="transfer-row transfer-row-account">
+                <span>Account number</span>
+                <div class="transfer-account-copy">
+                    <strong id="transfer-account-number">2004 5566 7189</strong>
+                    <button type="button" class="transfer-copy-btn" id="transfer-copy-btn">Copy</button>
+                </div>
+            </div>
+            <div class="transfer-row">
+                <span>Amount</span>
+                <strong id="transfer-amount"></strong>
+            </div>
+        </div>
+        <p class="transfer-note">Use your name as the transfer reference. We'll hold your order for 30 minutes while we confirm the payment.</p>
+        <button type="button" class="btn2 cart-checkout-btn" id="transfer-confirm-btn">I've Sent the Transfer</button>
+    </div>
+
+    <!-- Transient status overlay (payment verifying / confirmed) -->
+    <div class="payment-status-overlay" id="payment-status-overlay" hidden>
+        <div class="payment-status-icon" id="payment-status-icon">&#10003;</div>
+        <p id="payment-status-text"></p>
+    </div>
+
+    <!-- Step 4: delivery details -->
     <div class="checkout-view" id="checkout-view" hidden>
-        <button type="button" class="cart-back-btn" id="checkout-back-btn">&larr; Back to order</button>
+        <button type="button" class="cart-back-btn" id="checkout-back-btn">&larr; Back to payment options</button>
+        <h3 class="cart-step-heading">Delivery details</h3>
         <form id="checkout-form">
             <label for="checkout-name">Full name</label>
             <input type="text" id="checkout-name" name="name" autocomplete="name" required>
@@ -90,17 +195,37 @@
             <label for="checkout-address">Delivery address</label>
             <textarea id="checkout-address" name="address" rows="2" required></textarea>
 
+            <div class="card-row">
+                <div>
+                    <label for="checkout-date">Delivery date</label>
+                    <input type="date" id="checkout-date" name="date" required>
+                </div>
+                <div>
+                    <label for="checkout-time">Delivery time</label>
+                    <select id="checkout-time" name="time" required>
+                        <option value="" disabled selected>Select a slot</option>
+                        <option>9:00 AM &ndash; 11:00 AM</option>
+                        <option>11:00 AM &ndash; 1:00 PM</option>
+                        <option>1:00 PM &ndash; 3:00 PM</option>
+                        <option>3:00 PM &ndash; 5:00 PM</option>
+                        <option>5:00 PM &ndash; 7:00 PM</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="checkout-recap" id="checkout-recap"></div>
 
             <button type="submit" class="btn2 cart-checkout-btn">Confirm Order</button>
         </form>
     </div>
 
-    <!-- Step 3: confirmation -->
+    <!-- Step 5: confirmation -->
     <div class="confirmation-view" id="confirmation-view" hidden>
         <div class="confirmation-check" aria-hidden="true">&#10003;</div>
         <h3>Order placed!</h3>
         <p>Order <strong id="confirmation-number"></strong> is confirmed. We'll start baking right away.</p>
+        <p class="confirmation-detail" id="confirmation-payment"></p>
+        <p class="confirmation-detail" id="confirmation-delivery"></p>
         <p class="confirmation-total" id="confirmation-total"></p>
         <button type="button" class="btn2 cart-checkout-btn" id="continue-shopping-btn">Continue Shopping</button>
     </div>

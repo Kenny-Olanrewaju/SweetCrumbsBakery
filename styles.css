@@ -152,15 +152,38 @@ nav a.cart-link {
 
 .hamburger{
     display: none;
-    font-size: 2rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 2.25rem;
+    height: 2.25rem;
     background: none;
     border: none;
-    color: var(--secondary);
+    border-radius: 50%;
     cursor: pointer;
-    transition: transform var(--transition);
+    padding: 0;
+    transition: background var(--transition);
 }
 .hamburger:hover {
-    transform: scale(1.1);
+    background: rgba(255,255,255,0.15);
+}
+.hamburger-bar {
+    display: block;
+    width: 1.5rem;
+    height: 2px;
+    background: var(--secondary);
+    border-radius: 2px;
+    transition: transform var(--transition), opacity var(--transition);
+}
+.hamburger.active .hamburger-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+.hamburger.active .hamburger-bar:nth-child(2) {
+    opacity: 0;
+}
+.hamburger.active .hamburger-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
 }
 
 /*Hero-section*/
@@ -766,19 +789,41 @@ nav a.cart-link {
     margin-bottom: -0.5rem;
 }
 #checkout-form input,
-#checkout-form textarea {
+#checkout-form textarea,
+#checkout-form select {
     width: 100%;
     padding: 0.55rem 0.7rem;
     border-radius: 0.5rem;
     border: 2px solid var(--primary);
     font-family: inherit;
     font-size: 14px;
+    background: white;
 }
 #checkout-form input:focus,
-#checkout-form textarea:focus {
+#checkout-form textarea:focus,
+#checkout-form select:focus {
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.15);
+}
+.card-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.85rem;
+}
+.card-row > div {
+    min-width: 0;
+}
+.card-row label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: -0.5rem;
+    display: block;
+}
+.card-row input,
+.card-row select {
+    width: 100%;
+    min-width: 0;
 }
 .checkout-recap {
     background: var(--secondary);
@@ -789,6 +834,212 @@ nav a.cart-link {
 }
 .checkout-recap strong {
     color: var(--accent);
+}
+
+.cart-step-heading {
+    color: var(--accent);
+    font-size: 1.05rem;
+    margin-bottom: 0.35rem;
+}
+.cart-step-total {
+    color: #777;
+    font-size: 0.85rem;
+    margin-bottom: 1.1rem;
+}
+
+/* Payment method selection */
+.payment-method-view {
+    padding: 1.25rem 1.5rem;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}
+.payment-options {
+    display: grid;
+    gap: 0.75rem;
+}
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    width: 100%;
+    padding: 0.9rem 1rem;
+    background: white;
+    border: 2px solid rgba(160, 82, 45, 0.15);
+    border-radius: 0.75rem;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.payment-option:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+.payment-option-icon {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+.payment-option-text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.15rem;
+}
+.payment-option-text strong {
+    color: #333;
+    font-size: 0.98rem;
+}
+.payment-option-text small {
+    color: #888;
+    font-size: 0.8rem;
+}
+.payment-option-arrow {
+    font-size: 1.4rem;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+/* Card payment view */
+.card-payment-view {
+    padding: 1.25rem 1.5rem;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}
+#card-payment-form {
+    display: grid;
+    gap: 0.85rem;
+}
+#card-payment-form label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: -0.5rem;
+}
+#card-payment-form input {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    border-radius: 0.5rem;
+    border: 2px solid var(--primary);
+    font-family: inherit;
+    font-size: 14px;
+    letter-spacing: 0.03em;
+}
+#card-payment-form input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.15);
+}
+.field-error {
+    color: #b33;
+    font-size: 0.8rem;
+    margin-top: -0.4rem;
+}
+.secure-note {
+    text-align: center;
+    color: #999;
+    font-size: 0.78rem;
+    margin-top: 0.25rem;
+}
+
+/* Bank transfer view */
+.transfer-view {
+    padding: 1.25rem 1.5rem;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}
+.transfer-details {
+    background: white;
+    border: 2px solid rgba(160, 82, 45, 0.15);
+    border-radius: 0.75rem;
+    padding: 1rem 1.1rem;
+    margin-bottom: 1rem;
+}
+.transfer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+.transfer-row:not(:last-child) {
+    border-bottom: 1px dashed rgba(160, 82, 45, 0.2);
+}
+.transfer-row strong {
+    color: #333;
+}
+.transfer-account-copy {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.transfer-copy-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 0.25rem 0.7rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background var(--transition);
+}
+.transfer-copy-btn:hover {
+    background: var(--accent);
+}
+.transfer-note {
+    color: #888;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+}
+
+/* Transient status overlay: payment verifying / verified */
+.payment-status-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 248, 240, 0.97);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    z-index: 5;
+}
+.payment-status-overlay[hidden] {
+    display: none;
+}
+.payment-status-icon {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    animation: statusPop 0.4s ease;
+}
+@keyframes statusPop {
+    0% { transform: scale(0.6); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+.payment-status-overlay p {
+    font-weight: 600;
+    color: var(--accent);
+    font-size: 1.05rem;
+}
+.payment-status-overlay.status-loading .payment-status-icon {
+    background: var(--primary);
+    animation: statusSpin 0.9s linear infinite;
+}
+@keyframes statusSpin {
+    to { transform: rotate(360deg); }
 }
 
 /* Confirmation view */
@@ -821,6 +1072,10 @@ nav a.cart-link {
     margin-bottom: 0.5rem;
     line-height: 1.6;
 }
+.confirmation-detail {
+    font-size: 0.88rem;
+    color: #777 !important;
+}
 .confirmation-total {
     font-weight: 700;
     color: var(--accent);
@@ -850,29 +1105,67 @@ footer {
 #nav-links {
     display: none;
     flex-direction: column;
-    background-color: var(--primary);
-    position: absolute;
-    top: 60px;
-    right: 20px;
-    width: 125px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    align-items: center;
+    justify-content: center;
+    gap: 1.75rem;
+    position: fixed;
+    inset: 0;
+    background: rgba(41, 26, 15, 0.96);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    width: auto;
+    border-radius: 0;
+    box-shadow: none;
+    z-index: 1500;
+    padding: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#nav-links::before {
+    content: "Sweet Crumbs";
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.75rem;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
 }
 
 #nav-links a {
-    margin: 1rem 0;
+    margin: 0;
     text-align: center;
+    font-size: 1.4rem;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    transform: translateY(14px);
 }
 
 #nav-links.show {
     display: flex;
     animation: none;
     opacity: 1;
+    pointer-events: auto;
+}
+
+#nav-links.show a {
+    animation: navLinkIn 0.45s ease forwards;
+}
+#nav-links.show a:nth-child(2) { animation-delay: 0.06s; }
+#nav-links.show a:nth-child(3) { animation-delay: 0.12s; }
+#nav-links.show a:nth-child(4) { animation-delay: 0.18s; }
+#nav-links.show a:nth-child(5) { animation-delay: 0.24s; }
+
+@keyframes navLinkIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .hamburger{
-    display: block;
-
+    display: flex;
+    position: relative;
+    z-index: 1600;
 }
 
 .hero h2 {

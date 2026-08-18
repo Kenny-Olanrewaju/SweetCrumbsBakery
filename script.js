@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Toggle mobile menu
     hamburger.addEventListener('click', () => {
         const isOpen = navLinks.classList.toggle('show');
+        hamburger.classList.toggle('active', isOpen);
         hamburger.setAttribute('aria-expanded', isOpen);
     });
 
@@ -62,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
     navLinks.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             navLinks.classList.remove('show');
+            hamburger.classList.remove('active');
             hamburger.setAttribute('aria-expanded', 'false');
         });
     });
@@ -236,10 +238,19 @@ function initCart() {
     if (!ordersLink || !backdrop || !panel) return;
 
     const closeBtn = document.getElementById('cart-close');
+
+    // Views
     const cartView = document.getElementById('cart-view');
+    const paymentMethodView = document.getElementById('payment-method-view');
+    const cardPaymentView = document.getElementById('card-payment-view');
+    const transferView = document.getElementById('transfer-view');
     const checkoutView = document.getElementById('checkout-view');
     const confirmationView = document.getElementById('confirmation-view');
+    const statusOverlay = document.getElementById('payment-status-overlay');
+    const statusIcon = document.getElementById('payment-status-icon');
+    const statusText = document.getElementById('payment-status-text');
 
+    // Cart view elements
     const itemsEl = document.getElementById('cart-items');
     const emptyEl = document.getElementById('cart-empty');
     const subtotalEl = document.getElementById('cart-subtotal');
@@ -248,15 +259,47 @@ function initCart() {
     const deliveryHintEl = document.getElementById('cart-delivery-hint');
     const checkoutBtn = document.getElementById('cart-checkout-btn');
 
-    const checkoutForm = document.getElementById('checkout-form');
+    // Payment method view
+    const paymentMethodTotal = document.getElementById('payment-method-total');
+    const payDeliveryBtn = document.getElementById('pay-delivery-btn');
+    const payCardBtn = document.getElementById('pay-card-btn');
+    const payTransferBtn = document.getElementById('pay-transfer-btn');
+    const paymentBackBtn = document.getElementById('payment-back-btn');
+
+    // Card payment view
+    const cardForm = document.getElementById('card-payment-form');
+    const cardNameInput = document.getElementById('card-name');
+    const cardNumberInput = document.getElementById('card-number');
+    const cardExpiryInput = document.getElementById('card-expiry');
+    const cardCvvInput = document.getElementById('card-cvv');
+    const cardError = document.getElementById('card-error');
+    const cardRecap = document.getElementById('card-recap');
+    const cardPayBtnText = document.getElementById('card-pay-btn-text');
+    const cardBackBtn = document.getElementById('card-back-btn');
+
+    // Transfer view
+    const transferAmountEl = document.getElementById('transfer-amount');
+    const transferCopyBtn = document.getElementById('transfer-copy-btn');
+    const transferAccountNumber = document.getElementById('transfer-account-number');
+    const transferConfirmBtn = document.getElementById('transfer-confirm-btn');
+    const transferBackBtn = document.getElementById('transfer-back-btn');
+
+    // Delivery details (checkout) view
     const checkoutBackBtn = document.getElementById('checkout-back-btn');
+    const checkoutForm = document.getElementById('checkout-form');
+    const checkoutDateInput = document.getElementById('checkout-date');
+    const checkoutTimeSelect = document.getElementById('checkout-time');
     const checkoutRecap = document.getElementById('checkout-recap');
 
+    // Confirmation view
     const confirmationNumber = document.getElementById('confirmation-number');
+    const confirmationPayment = document.getElementById('confirmation-payment');
+    const confirmationDelivery = document.getElementById('confirmation-delivery');
     const confirmationTotal = document.getElementById('confirmation-total');
     const continueShoppingBtn = document.getElementById('continue-shopping-btn');
 
     let lastFocusedEl = null;
+    let selectedPaymentMethod = ''; // 'delivery' | 'card' | 'transfer'
 
     function money(n) {
         return '$' + n.toFixed(2);
@@ -271,18 +314,27 @@ function initCart() {
         return subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
     }
 
+    function getOrderTotal() {
+        const subtotal = getSubtotal();
+        return subtotal + getDeliveryFee(subtotal);
+    }
+
+    function paymentMethodLabel(method) {
+        if (method === 'card') return 'Card payment';
+        if (method === 'transfer') return 'Bank transfer';
+        return 'Cash / card on delivery';
+    }
+
     function renderCart() {
         const subtotal = getSubtotal();
         const deliveryFee = getDeliveryFee(subtotal);
         const total = subtotal + deliveryFee;
         const itemCount = cart.reduce((sum, item) => sum + item.qty, 0);
 
-        // Badge
         const badge = document.getElementById('cart-badge');
         if (badge) badge.textContent = itemCount;
         ordersLink.setAttribute('aria-label', `Orders, ${itemCount} item${itemCount === 1 ? '' : 's'} in cart`);
 
-        // Items list
         itemsEl.innerHTML = '';
         if (!cart.length) {
             itemsEl.appendChild(emptyEl);
@@ -310,7 +362,6 @@ function initCart() {
             });
         }
 
-        // Summary
         subtotalEl.textContent = money(subtotal);
         deliveryFeeEl.textContent = deliveryFee === 0 && subtotal > 0 ? 'FREE' : money(deliveryFee);
         totalEl.textContent = money(total);
@@ -325,7 +376,6 @@ function initCart() {
         }
     }
 
-    // Event delegation for qty +/- and remove buttons
     itemsEl.addEventListener('click', (e) => {
         const target = e.target;
         const name = target.dataset.name;
@@ -346,9 +396,10 @@ function initCart() {
         renderCart();
     });
 
+    /* ---- Panel open/close ---- */
     function openPanel() {
         lastFocusedEl = document.activeElement;
-        showCartView();
+        showView('cart');
         renderCart();
         backdrop.classList.add('open');
         panel.classList.add('open');
@@ -371,59 +422,173 @@ function initCart() {
         if (e.key === 'Escape') closePanel();
     }
 
-    function showCartView() {
-        cartView.hidden = false;
-        checkoutView.hidden = true;
-        confirmationView.hidden = true;
+    /* ---- View switching ----
+       Only one of these is ever visible; everything else gets [hidden]. */
+    const allViews = {
+        cart: cartView,
+        payment: paymentMethodView,
+        card: cardPaymentView,
+        transfer: transferView,
+        delivery: checkoutView,
+        confirmation: confirmationView
+    };
+
+    function showView(name) {
+        Object.entries(allViews).forEach(([key, el]) => {
+            el.hidden = key !== name;
+        });
+        statusOverlay.hidden = true;
     }
 
-    function showCheckoutView() {
-        const subtotal = getSubtotal();
-        const deliveryFee = getDeliveryFee(subtotal);
-        const total = subtotal + deliveryFee;
+    /* ---- Step 1 -> 2: choose payment method ---- */
+    checkoutBtn.addEventListener('click', () => {
+        if (cart.length === 0) return;
+        paymentMethodTotal.textContent = `Order total: ${money(getOrderTotal())}`;
+        showView('payment');
+    });
+    paymentBackBtn.addEventListener('click', () => showView('cart'));
+
+    payDeliveryBtn.addEventListener('click', () => {
+        selectedPaymentMethod = 'delivery';
+        goToDeliveryDetails();
+    });
+
+    payCardBtn.addEventListener('click', () => {
+        selectedPaymentMethod = 'card';
+        cardForm.reset();
+        cardError.hidden = true;
+        cardRecap.innerHTML = `Charging <strong>${money(getOrderTotal())}</strong> to the card below.`;
+        cardPayBtnText.textContent = `Pay ${money(getOrderTotal())}`;
+        showView('card');
+    });
+
+    payTransferBtn.addEventListener('click', () => {
+        selectedPaymentMethod = 'transfer';
+        transferAmountEl.textContent = money(getOrderTotal());
+        showView('transfer');
+    });
+
+    cardBackBtn.addEventListener('click', () => showView('payment'));
+    transferBackBtn.addEventListener('click', () => showView('payment'));
+
+    /* ---- Card number / expiry auto-formatting ---- */
+    cardNumberInput.addEventListener('input', () => {
+        let digits = cardNumberInput.value.replace(/\D/g, '').slice(0, 16);
+        cardNumberInput.value = digits.replace(/(.{4})/g, '$1 ').trim();
+    });
+    cardExpiryInput.addEventListener('input', () => {
+        let digits = cardExpiryInput.value.replace(/\D/g, '').slice(0, 4);
+        if (digits.length >= 3) {
+            cardExpiryInput.value = digits.slice(0, 2) + '/' + digits.slice(2);
+        } else {
+            cardExpiryInput.value = digits;
+        }
+    });
+    cardCvvInput.addEventListener('input', () => {
+        cardCvvInput.value = cardCvvInput.value.replace(/\D/g, '').slice(0, 4);
+    });
+
+    /* ---- Step 3a: card payment submit ---- */
+    cardForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        cardError.hidden = true;
+
+        const digits = cardNumberInput.value.replace(/\s/g, '');
+        const expiryValid = /^(0[1-9]|1[0-2])\/\d{2}$/.test(cardExpiryInput.value.trim());
+        const cvvValid = /^\d{3,4}$/.test(cardCvvInput.value.trim());
+
+        if (digits.length !== 16 || !expiryValid || !cvvValid || !cardNameInput.value.trim()) {
+            cardError.textContent = 'Please check your card details and try again.';
+            cardError.hidden = false;
+            return;
+        }
+
+        // Simulate a payment gateway: verifying, then verified.
+        showStatus('loading', 'Verifying payment\u2026');
+        setTimeout(() => {
+            showStatus('success', 'Payment verified \u2713');
+            setTimeout(() => {
+                goToDeliveryDetails();
+            }, 3000);
+        }, 1200);
+    });
+
+    function showStatus(kind, text) {
+        statusOverlay.hidden = false;
+        statusOverlay.classList.toggle('status-loading', kind === 'loading');
+        statusIcon.textContent = kind === 'loading' ? '' : '\u2713';
+        statusText.textContent = text;
+    }
+
+    /* ---- Step 3b: bank transfer confirm ---- */
+    transferCopyBtn.addEventListener('click', () => {
+        const value = transferAccountNumber.textContent.trim();
+        const done = () => {
+            const original = transferCopyBtn.textContent;
+            transferCopyBtn.textContent = 'Copied!';
+            setTimeout(() => { transferCopyBtn.textContent = original; }, 1500);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(value).then(done).catch(done);
+        } else {
+            done();
+        }
+    });
+
+    transferConfirmBtn.addEventListener('click', () => {
+        showStatus('success', 'Transfer reference noted \u2713');
+        setTimeout(() => {
+            goToDeliveryDetails();
+        }, 1500);
+    });
+
+    /* ---- Step 4: delivery details ---- */
+    function goToDeliveryDetails() {
+        const today = new Date();
+        const minDate = new Date(today);
+        minDate.setDate(today.getDate() + 1);
+        const maxDate = new Date(today);
+        maxDate.setDate(today.getDate() + 14);
+        checkoutDateInput.min = minDate.toISOString().split('T')[0];
+        checkoutDateInput.max = maxDate.toISOString().split('T')[0];
+
         checkoutRecap.innerHTML = `
-            <strong>${cart.reduce((s, i) => s + i.qty, 0)} item(s)</strong> &middot;
-            Subtotal ${money(subtotal)} &middot;
-            Delivery ${deliveryFee === 0 ? 'FREE' : money(deliveryFee)} &middot;
-            <strong>Total ${money(total)}</strong>
+            Paying via <strong>${paymentMethodLabel(selectedPaymentMethod)}</strong> &middot;
+            Total <strong>${money(getOrderTotal())}</strong>
         `;
-        cartView.hidden = true;
-        checkoutView.hidden = false;
-        confirmationView.hidden = true;
+        showView('delivery');
     }
 
-    function showConfirmationView(orderTotal) {
+    checkoutBackBtn.addEventListener('click', () => showView('payment'));
+
+    checkoutForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const total = getOrderTotal();
+        const dateLabel = checkoutDateInput.value
+            ? new Date(checkoutDateInput.value + 'T00:00:00').toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })
+            : '';
+        const timeLabel = checkoutTimeSelect.value;
+
         const orderNumber = 'SC-' + Math.floor(100000 + Math.random() * 900000);
         confirmationNumber.textContent = `#${orderNumber}`;
-        confirmationTotal.textContent = `Total charged: ${money(orderTotal)}`;
-        cartView.hidden = true;
-        checkoutView.hidden = true;
-        confirmationView.hidden = false;
-    }
+        confirmationPayment.textContent = `Payment: ${paymentMethodLabel(selectedPaymentMethod)}`;
+        confirmationDelivery.textContent = `Arriving ${dateLabel}, ${timeLabel}`;
+        confirmationTotal.textContent = `Total charged: ${money(total)}`;
 
+        showView('confirmation');
+        cart = [];
+        renderCart();
+        checkoutForm.reset();
+        selectedPaymentMethod = '';
+    });
+
+    /* ---- Wire up open / close ---- */
     ordersLink.addEventListener('click', (e) => {
         e.preventDefault();
         openPanel();
     });
     closeBtn.addEventListener('click', closePanel);
     backdrop.addEventListener('click', closePanel);
-
-    checkoutBtn.addEventListener('click', () => {
-        if (cart.length === 0) return;
-        showCheckoutView();
-    });
-    checkoutBackBtn.addEventListener('click', showCartView);
-
-    checkoutForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const subtotal = getSubtotal();
-        const total = subtotal + getDeliveryFee(subtotal);
-        showConfirmationView(total);
-        cart = [];
-        renderCart();
-        checkoutForm.reset();
-    });
-
     continueShoppingBtn.addEventListener('click', closePanel);
 
     renderCart();
