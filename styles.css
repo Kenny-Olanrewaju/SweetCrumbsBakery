@@ -583,7 +583,7 @@ nav a.cart-link {
     position: fixed;
     top: 0;
     right: 0;
-    height: 100vh;
+    bottom: 0;
     width: 26rem;
     max-width: 92vw;
     background: var(--secondary);
