@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>🍞 Menu - Sweet Crumbs Bakery</title>
+    <meta name="description" content="Browse the full Sweet Crumbs Bakery menu — cakes, pastries, cookies, tarts, and more, baked fresh daily.">
+    <title>Menu - Sweet Crumbs Bakery</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍞</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
@@ -15,10 +17,11 @@
     <nav id="nav-links">
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
-            <a href="menu.html">Menu</a>
+            <a href="menu.html" class="active" aria-current="page">Menu</a>
             <a href="contact.html">Contact</a>
+            <a href="#" id="orders-link" class="cart-link" aria-haspopup="dialog">Orders<span class="cart-badge" id="cart-badge">0</span></a>
         </nav>
-        <button class="hamburger" id="hamburger">&#9776;</button>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">&#9776;</button>
     </header>
     <!--Product-grid-->
     <div class="container">
@@ -26,236 +29,327 @@
         <h3>Check out our list of delightful and mouth-watering delicacies that will enlighten your taste buds</h3> <br>
         <div class="grid">
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/9d/81/b5/9d81b5fc0754c3b4e1a03e630c91eafd.jpg" alt="Macaroons">
+                <img src="https://i.pinimg.com/1200x/9d/81/b5/9d81b5fc0754c3b4e1a03e630c91eafd.jpg" alt="Macaroons" loading="lazy">
                 <h3>Macaroons</h3>
                 <p>Delicate French cookies with a creamy filling.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/63/67/9e/63679e1ec0910c3dd861c0fd9eab940c.jpg" alt="Muffin">
+                <img src="https://i.pinimg.com/1200x/63/67/9e/63679e1ec0910c3dd861c0fd9eab940c.jpg" alt="Muffin" loading="lazy">
                 <h3>Blueberry Muffin</h3>
                 <p>Moist muffin bursting with fresh blueberries.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/da/4b/92/da4b92ed95376a48840b2001e3d67180.jpg" alt="Tart">
+                <img src="https://i.pinimg.com/1200x/da/4b/92/da4b92ed95376a48840b2001e3d67180.jpg" alt="Tart" loading="lazy">
                 <h3>Lemon Tart</h3>
                 <p>Tangy lemon curd in a crisp pastry shell.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/736x/a8/fe/77/a8fe7731278a61c513be9cc9d30512c9.jpg" alt="Cheesecake">
+                <img src="https://i.pinimg.com/736x/a8/fe/77/a8fe7731278a61c513be9cc9d30512c9.jpg" alt="Cheesecake" loading="lazy">
                 <h3>Cheesecake</h3>
                 <p>Creamy and rich, a perfect dessert indulgence.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/736x/d1/4e/a0/d14ea027bcaf827de75bd1cfcbc3fc32.jpg" alt="Brownies">
+                <img src="https://i.pinimg.com/736x/d1/4e/a0/d14ea027bcaf827de75bd1cfcbc3fc32.jpg" alt="Brownies" loading="lazy">
                 <h3>Brownies</h3>
                 <p>Fudgy and chocolatey, a classic treat.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/4b/70/44/4b704448f408deb438903cb67e0b2620.jpg" alt="Apple pie">
+                <img src="https://i.pinimg.com/1200x/4b/70/44/4b704448f408deb438903cb67e0b2620.jpg" alt="Apple pie" loading="lazy">
                 <h3>Apple Pie</h3>
                 <p>Traditional pie with a flaky crust and spiced apple filling.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/53/f9/7b/53f97be812da8db577ff2e73f1aa4827.jpg" alt="Cinnamon Roll">
+                <img src="https://i.pinimg.com/1200x/53/f9/7b/53f97be812da8db577ff2e73f1aa4827.jpg" alt="Cinnamon Roll" loading="lazy">
                 <h3>Cinnamon Roll</h3>
                 <p>Soft roll swirled with cinnamon and topped with icing.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/b6/06/65/b6066589eded87a60755a7c114bd453e.jpg" alt="Eclair">
+                <img src="https://i.pinimg.com/1200x/b6/06/65/b6066589eded87a60755a7c114bd453e.jpg" alt="Eclair" loading="lazy">
                 <h3>Eclair</h3>
                 <p>Choux pastry filled with cream and topped with chocolate icing.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/1a/71/8d/1a718dc7292d2609d50b069e8ae4cbcf.jpg" alt="Shortbread">
+                <img src="https://i.pinimg.com/1200x/1a/71/8d/1a718dc7292d2609d50b069e8ae4cbcf.jpg" alt="Shortbread" loading="lazy">
                 <h3>Shortbread</h3>
                 <p>Buttery and crumbly cookie, perfect with tea or coffee.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/736x/26/75/d7/2675d71396d515785595ec4f641be2f5.jpg" alt="Crème Brûlée">
+                <img src="https://i.pinimg.com/736x/26/75/d7/2675d71396d515785595ec4f641be2f5.jpg" alt="Crème Brûlée" loading="lazy">
                 <h3>Crème brûlée</h3>
                 <p>Rich custard base topped with a contrasting layer of hard caramel.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/736x/0e/c2/89/0ec289492947872976c5c52215280faa.jpg" alt="Tiramisu">
+                <img src="https://i.pinimg.com/736x/0e/c2/89/0ec289492947872976c5c52215280faa.jpg" alt="Tiramisu" loading="lazy">
                 <h3>Tiramisu</h3>
                 <p>Classic Italian dessert with layers of coffee-soaked ladyfingers and cheese.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/4a/07/d4/4a07d4edd2e3822f68a064fa8db9a0c5.jpg" alt="Lobster Tail">
+                <img src="https://i.pinimg.com/1200x/4a/07/d4/4a07d4edd2e3822f68a064fa8db9a0c5.jpg" alt="Lobster Tail" loading="lazy">
                 <h3>Lobster Tail</h3>
                 <p>Flaky pastry filled with sweet custard cream, topped with powdered sugar.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/f6/a3/87/f6a38762f36956b5da6b6c467c1c1a39.jpg" alt="Filipino Cheesebars">
+                <img src="https://i.pinimg.com/1200x/f6/a3/87/f6a38762f36956b5da6b6c467c1c1a39.jpg" alt="Filipino Cheesebars" loading="lazy">
                 <h3>Filipino Cheesebars</h3>
                 <p>Buttery pastry crust topped with a creamy cheese filling.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/8e/8f/69/8e8f693788211b5405f3fc07dd083583.jpg" alt="Pepperoni Pizza">
+                <img src="https://i.pinimg.com/1200x/8e/8f/69/8e8f693788211b5405f3fc07dd083583.jpg" alt="Pepperoni Pizza" loading="lazy">
                 <h3>Pepperoni Pizza</h3>
                 <p>Classic pizza topped with spicy pepperoni slices and melted cheese.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/736x/a2/4e/0f/a24e0f4865370ee868257f0a4ecd978a.jpg" alt="Doughnut">
+                <img src="https://i.pinimg.com/736x/a2/4e/0f/a24e0f4865370ee868257f0a4ecd978a.jpg" alt="Doughnut" loading="lazy">
                 <h3>Doughnut</h3>
                 <p>Soft, fluffy, and topped with creamy frosting.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/9b/98/c7/9b98c7ec8a35300f627cad7047c9563e.jpg" alt="Red Velvet Cupcake">
+                <img src="https://i.pinimg.com/1200x/9b/98/c7/9b98c7ec8a35300f627cad7047c9563e.jpg" alt="Red Velvet Cupcake" loading="lazy">
                 <h3>Red Velvet Cupcake</h3>
                 <p>Moist red velvet cake topped with rich cream cheese frosting.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
             <div class="card">
-                <img src="https://i.pinimg.com/736x/46/08/f4/4608f446a7c867ede2f6f4d14ca31d78.jpg" alt="Scone">
+                <img src="https://i.pinimg.com/736x/46/08/f4/4608f446a7c867ede2f6f4d14ca31d78.jpg" alt="Scone" loading="lazy">
                 <h3>Scone</h3>
                 <p>Classic British treat, crumbly and perfect with jam and cream.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/c9/06/73/c9067318a57de726e714aa42b0423d3b.jpg" alt="Pecan Pie">
+                <img src="https://i.pinimg.com/1200x/c9/06/73/c9067318a57de726e714aa42b0423d3b.jpg" alt="Pecan Pie" loading="lazy">
                 <h3>Pecan Pie</h3>
                 <p>Sweet and nutty pie with a gooey pecan filling in a flaky crust.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
             <div class="card">
-                <img src="https://i.pinimg.com/736x/5f/3a/4f/5f3a4f236e69ce77990fffb1545a11f0.jpg" alt="Baklava">
+                <img src="https://i.pinimg.com/736x/5f/3a/4f/5f3a4f236e69ce77990fffb1545a11f0.jpg" alt="Baklava" loading="lazy">
                 <h3>Baklava</h3>
                 <p>Layers of filo pastry, nuts, and honey syrup, a Mediterranean delight.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/a3/ae/16/a3ae16fa11ddda988b7fdc9553995529.jpg" alt="Fruit Danish">
+                <img src="https://i.pinimg.com/1200x/a3/ae/16/a3ae16fa11ddda988b7fdc9553995529.jpg" alt="Fruit Danish" loading="lazy">
                 <h3>Fruit Danish</h3>
                 <p>Buttery pastry topped with sweet fruit and glaze.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/a2/76/7a/a2767a2a3bd6bbf36a27dff85cd81d27.jpg" alt="Opera Cake">
+                <img src="https://i.pinimg.com/1200x/a2/76/7a/a2767a2a3bd6bbf36a27dff85cd81d27.jpg" alt="Opera Cake" loading="lazy">
                 <h3>Opera Cake</h3>
                 <p>Elegant French cake with layers of almond sponge, coffee, and chocolate.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/90/12/bb/9012bb43f36495c1b13aa5862fa9159a.jpg" alt="Profiterole">
+                <img src="https://i.pinimg.com/1200x/90/12/bb/9012bb43f36495c1b13aa5862fa9159a.jpg" alt="Profiterole" loading="lazy">
                 <h3>Profiterole</h3>
                 <p>Choux pastry balls filled with cream and topped with chocolate sauce.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/7c/e9/02/7ce90234e6f34e5285a424cbf2f97534.jpg" alt="Bakery Scone">
+                <img src="https://i.pinimg.com/1200x/7c/e9/02/7ce90234e6f34e5285a424cbf2f97534.jpg" alt="Bakery Scone" loading="lazy">
                 <h3>Raspberry Scone</h3>
                 <p>Buttery, crumbly scone bursting with fresh raspberries.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/736x/92/69/f5/9269f546bc680995d5c446a6cafd4d5b.jpg" alt="Napoleon">
+                <img src="https://i.pinimg.com/736x/92/69/f5/9269f546bc680995d5c446a6cafd4d5b.jpg" alt="Napoleon" loading="lazy">
                 <h3>Napoleon (Mille-feuille)</h3>
                 <p>Layers of puff pastry and pastry cream, topped with fondant icing.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/52/e0/00/52e0009104b2d451159ffaf9bf4a94f6.jpg" alt="Pavlova">
+                <img src="https://i.pinimg.com/1200x/52/e0/00/52e0009104b2d451159ffaf9bf4a94f6.jpg" alt="Pavlova" loading="lazy">
                 <h3>Pavlova</h3>
                 <p>Light meringue dessert topped with whipped cream and fresh fruit.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/736x/d4/8d/a2/d48da2917a6a2e5b707091a98b1a4e66.jpg" alt="Black Forest Cake">
+                <img src="https://i.pinimg.com/736x/d4/8d/a2/d48da2917a6a2e5b707091a98b1a4e66.jpg" alt="Black Forest Cake" loading="lazy">
                 <h3>Black Forest Cake</h3>
                 <p>Chocolate sponge cake layered with cherries and whipped cream.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/f1/bb/92/f1bb92a2a323926a8180e4ecfb210c4d.jpg" alt="Almond Biscotti">
+                <img src="https://i.pinimg.com/1200x/f1/bb/92/f1bb92a2a323926a8180e4ecfb210c4d.jpg" alt="Almond Biscotti" loading="lazy">
                 <h3>Almond Biscotti</h3>
                 <p>Crunchy Italian cookies, perfect for dipping in coffee.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/736x/23/1e/c1/231ec124c7f2ff4a30b25693fc516b59.jpg" alt="Pumpkin Roll">
+                <img src="https://i.pinimg.com/736x/23/1e/c1/231ec124c7f2ff4a30b25693fc516b59.jpg" alt="Pumpkin Roll" loading="lazy">
                 <h3>Pumpkin Roll</h3>
                 <p>Spiced pumpkin cake rolled with sweet cream cheese filling.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/736x/a9/ac/2a/a9ac2abc6091325d15dbb24780ca4e9b.jpg" alt="Opera Slice">
+                <img src="https://i.pinimg.com/736x/a9/ac/2a/a9ac2abc6091325d15dbb24780ca4e9b.jpg" alt="Opera Slice" loading="lazy">
                 <h3>Opera Slice</h3>
                 <p>Elegant French dessert with almond sponge, coffee, and chocolate layers.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/56/04/0c/56040ccb1bbd2f7f700953e1e7e71265.jpg" alt="Lemon Meringue Pie">
+                <img src="https://i.pinimg.com/1200x/56/04/0c/56040ccb1bbd2f7f700953e1e7e71265.jpg" alt="Lemon Meringue Pie" loading="lazy">
                 <h3>Lemon Meringue Pie</h3>
                 <p>Tart lemon filling topped with fluffy, toasted meringue.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/736x/17/b0/33/17b0339020698983f2a68d647527629b.jpg" alt="Strudel">
+                <img src="https://i.pinimg.com/736x/17/b0/33/17b0339020698983f2a68d647527629b.jpg" alt="Strudel" loading="lazy">
                 <h3>Strudel</h3>
                 <p>Thin layers of pastry filled with spiced apples and raisins.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/1200x/ab/4a/e5/ab4ae58febbddfcc24a2539740847ae0.jpg" alt="Matcha Roll Cake">
+                <img src="https://i.pinimg.com/1200x/ab/4a/e5/ab4ae58febbddfcc24a2539740847ae0.jpg" alt="Matcha Roll Cake" loading="lazy">
                 <h3>Matcha Roll Cake</h3>
                 <p>Light and fluffy green tea sponge cake rolled with sweet cream.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
 
             <div class="card">
-                <img src="https://i.pinimg.com/736x/a1/fd/f9/a1fdf940f737d655f2881206b5790546.jpg" alt="Hazelnut Mousse">
+                <img src="https://i.pinimg.com/736x/a1/fd/f9/a1fdf940f737d655f2881206b5790546.jpg" alt="Hazelnut Mousse" loading="lazy">
                 <h3>Hazelnut Mousse</h3>
                 <p>Creamy hazelnut mousse topped with chocolate shavings.</p>
-                <a href="" class="btn2">Order now</a>
+                <a href="contact.html" class="btn2">Order now</a>
             </div>
         </div>
     </div>
+<!--Product-details-modal-->
+<div class="modal-overlay" id="product-modal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button class="modal-close" id="modal-close" aria-label="Close details">&times;</button>
+        <div class="modal-image-wrap">
+            <img id="modal-img" src="" alt="">
+        </div>
+        <div class="modal-body">
+            <div class="modal-heading">
+                <h3 id="modal-title"></h3>
+                <span class="modal-price" id="modal-price"></span>
+            </div>
+            <p id="modal-desc"></p>
+
+            <div class="modal-order">
+                <h4>Order Now</h4>
+                <form id="modal-order-form">
+                    <div class="modal-order-row">
+                        <label for="modal-qty">Quantity</label>
+                        <input type="number" id="modal-qty" name="quantity" min="1" value="1" required>
+                    </div>
+                    <label for="modal-note">Special instructions (optional)</label>
+                    <textarea id="modal-note" name="note" rows="2" placeholder="e.g. write &quot;Happy Birthday&quot; on the cake"></textarea>
+                    <button type="submit" class="btn2">Place Order</button>
+                    <p class="modal-order-status" id="modal-order-status" role="status" aria-live="polite"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--Footer-section-->
 <footer>
-    <p>&copy; 2025 Sweet Crumbs Bakery | Designed with ❤️</p>
+    <p>&copy; <span class="copyright-year">2025</span> Sweet Crumbs Bakery | Designed with ❤️</p>
 </footer>
+
+<!--Cart / checkout panel-->
+<div class="cart-backdrop" id="cart-backdrop"></div>
+<aside class="cart-panel" id="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title" aria-hidden="true">
+    <div class="cart-panel-header">
+        <h2 id="cart-title">Your Order</h2>
+        <button class="modal-close cart-close" id="cart-close" aria-label="Close order panel">&times;</button>
+    </div>
+
+    <!-- Step 1: cart items -->
+    <div class="cart-view" id="cart-view">
+        <div class="cart-items" id="cart-items">
+            <p class="cart-empty" id="cart-empty">Your order is empty. Browse the menu and tap "View Details" on anything that looks good.</p>
+        </div>
+        <div class="cart-summary">
+            <p class="cart-delivery-hint" id="cart-delivery-hint"></p>
+            <div class="cart-summary-row">
+                <span>Subtotal</span>
+                <span id="cart-subtotal">$0.00</span>
+            </div>
+            <div class="cart-summary-row">
+                <span>Delivery fee</span>
+                <span id="cart-delivery-fee">$0.00</span>
+            </div>
+            <div class="cart-summary-row cart-total-row">
+                <span>Total</span>
+                <span id="cart-total">$0.00</span>
+            </div>
+            <button type="button" class="btn2 cart-checkout-btn" id="cart-checkout-btn" disabled>Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Step 2: delivery details -->
+    <div class="checkout-view" id="checkout-view" hidden>
+        <button type="button" class="cart-back-btn" id="checkout-back-btn">&larr; Back to order</button>
+        <form id="checkout-form">
+            <label for="checkout-name">Full name</label>
+            <input type="text" id="checkout-name" name="name" autocomplete="name" required>
+
+            <label for="checkout-phone">Phone number</label>
+            <input type="tel" id="checkout-phone" name="phone" autocomplete="tel" required>
+
+            <label for="checkout-address">Delivery address</label>
+            <textarea id="checkout-address" name="address" rows="2" required></textarea>
+
+            <div class="checkout-recap" id="checkout-recap"></div>
+
+            <button type="submit" class="btn2 cart-checkout-btn">Confirm Order</button>
+        </form>
+    </div>
+
+    <!-- Step 3: confirmation -->
+    <div class="confirmation-view" id="confirmation-view" hidden>
+        <div class="confirmation-check" aria-hidden="true">&#10003;</div>
+        <h3>Order placed!</h3>
+        <p>Order <strong id="confirmation-number"></strong> is confirmed. We'll start baking right away.</p>
+        <p class="confirmation-total" id="confirmation-total"></p>
+        <button type="button" class="btn2 cart-checkout-btn" id="continue-shopping-btn">Continue Shopping</button>
+    </div>
+</aside>
 
 </body>
 </html>

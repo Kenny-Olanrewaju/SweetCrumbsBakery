@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>🍞 Contact- Sweet Crumbs Bakery</title>
+    <meta name="description" content="Get in touch with Sweet Crumbs Bakery for custom cakes, catering, and special orders. We'd love to hear from you.">
+    <title>Contact- Sweet Crumbs Bakery</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍞</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
@@ -16,25 +18,93 @@
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
             <a href="menu.html">Menu</a>
-            <a href="contact.html">Contact</a>
+            <a href="contact.html" class="active" aria-current="page">Contact</a>
+            <a href="#" id="orders-link" class="cart-link" aria-haspopup="dialog">Orders<span class="cart-badge" id="cart-badge">0</span></a>
         </nav>
-        <button class="hamburger" id="hamburger">&#9776;</button>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">&#9776;</button>
     </header>
     <!--Contact-form-section-->
     <section class="contact-section">
         <h2>Let's Keep In Touch</h2>
 
-        <form class="contact-form">
-            <input type="text" placeholder="Your Name" required >
-            <input type="email" placeholder="Your Email" required>
-            <textarea placeholder="Your Message" rows="5" required></textarea>
+        <form class="contact-form" id="contact-form">
+            <label class="sr-only" for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="Your Name" autocomplete="name" required>
+
+            <label class="sr-only" for="email">Your Email</label>
+            <input type="email" id="email" name="email" placeholder="Your Email" autocomplete="email" required>
+
+            <label class="sr-only" for="message">Your Message</label>
+            <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+
             <button type="submit">Send Message</button>
-            
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
     </section><br><br>
 <!--Footer-section-->
 <footer>
-    <p>&copy; 2025 Sweet Crumbs Bakery | Designed with ❤️</p>
+    <p>&copy; <span class="copyright-year">2025</span> Sweet Crumbs Bakery | Designed with ❤️</p>
 </footer>
+
+<!--Cart / checkout panel-->
+<div class="cart-backdrop" id="cart-backdrop"></div>
+<aside class="cart-panel" id="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title" aria-hidden="true">
+    <div class="cart-panel-header">
+        <h2 id="cart-title">Your Order</h2>
+        <button class="modal-close cart-close" id="cart-close" aria-label="Close order panel">&times;</button>
+    </div>
+
+    <!-- Step 1: cart items -->
+    <div class="cart-view" id="cart-view">
+        <div class="cart-items" id="cart-items">
+            <p class="cart-empty" id="cart-empty">Your order is empty. Browse the menu and tap "View Details" on anything that looks good.</p>
+        </div>
+        <div class="cart-summary">
+            <p class="cart-delivery-hint" id="cart-delivery-hint"></p>
+            <div class="cart-summary-row">
+                <span>Subtotal</span>
+                <span id="cart-subtotal">$0.00</span>
+            </div>
+            <div class="cart-summary-row">
+                <span>Delivery fee</span>
+                <span id="cart-delivery-fee">$0.00</span>
+            </div>
+            <div class="cart-summary-row cart-total-row">
+                <span>Total</span>
+                <span id="cart-total">$0.00</span>
+            </div>
+            <button type="button" class="btn2 cart-checkout-btn" id="cart-checkout-btn" disabled>Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Step 2: delivery details -->
+    <div class="checkout-view" id="checkout-view" hidden>
+        <button type="button" class="cart-back-btn" id="checkout-back-btn">&larr; Back to order</button>
+        <form id="checkout-form">
+            <label for="checkout-name">Full name</label>
+            <input type="text" id="checkout-name" name="name" autocomplete="name" required>
+
+            <label for="checkout-phone">Phone number</label>
+            <input type="tel" id="checkout-phone" name="phone" autocomplete="tel" required>
+
+            <label for="checkout-address">Delivery address</label>
+            <textarea id="checkout-address" name="address" rows="2" required></textarea>
+
+            <div class="checkout-recap" id="checkout-recap"></div>
+
+            <button type="submit" class="btn2 cart-checkout-btn">Confirm Order</button>
+        </form>
+    </div>
+
+    <!-- Step 3: confirmation -->
+    <div class="confirmation-view" id="confirmation-view" hidden>
+        <div class="confirmation-check" aria-hidden="true">&#10003;</div>
+        <h3>Order placed!</h3>
+        <p>Order <strong id="confirmation-number"></strong> is confirmed. We'll start baking right away.</p>
+        <p class="confirmation-total" id="confirmation-total"></p>
+        <button type="button" class="btn2 cart-checkout-btn" id="continue-shopping-btn">Continue Shopping</button>
+    </div>
+</aside>
 
 </body>
 </html>
