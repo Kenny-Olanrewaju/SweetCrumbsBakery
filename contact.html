@@ -31,7 +31,7 @@
     <section class="contact-section">
         <h2>Let's Keep In Touch</h2>
 
-        <form class="contact-form" id="contact-form">
+        <form class="contact-form" id="contact-form" "mailto:kennycool202421@gmail.com" method="POST" enctype="text/plain">
             <label class="sr-only" for="name">Your Name</label>
             <input type="text" id="name" name="name" placeholder="Your Name" autocomplete="name" required>
 
@@ -40,8 +40,8 @@
 
             <label class="sr-only" for="message">Your Message</label>
             <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
-
-            <a href="mailto:kennycool202421@gmail.com" onclick="window.open('https://mail.google.com/mail/?view=cm&fs=1&to=kennycool202421@gmail.com', '_blank', 'noopener,noreferrer');">Send Message</a>
+            <!-- <a href="mailto:kennycool202421@gmail.com" onclick="window.open('https://mail.google.com/mail/?view=cm&fs=1&to=kennycool202421@gmail.com', '_blank', 'noopener,noreferrer');">Send Message</a> -->
+            <button type="submit">Send Message</button>
             <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
         </form>
     </section><br><br>
