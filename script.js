@@ -43,6 +43,9 @@ const productData = {
     "Hazelnut Mousse": { price: "$6.50", desc: "A light, airy hazelnut mousse layered over chocolate sponge and topped with toasted hazelnut shavings." }
 };
 
+// ---- Formspree endpoint used for both the contact form and order notifications ----
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mvkpygyk';
+
 // ---- Shopping cart state (in-memory for this page view) ----
 const DELIVERY_FEE = 4.99;
 const FREE_DELIVERY_THRESHOLD = 40;
@@ -94,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             status.textContent = 'Sending…';
 
-            fetch(form.action, {
+            fetch(FORMSPREE_ENDPOINT, {
                 method: 'POST',
                 body: new FormData(form),
                 headers: { 'Accept': 'application/json' }
@@ -312,6 +315,11 @@ function initCart() {
     const checkoutDateInput = document.getElementById('checkout-date');
     const checkoutTimeSelect = document.getElementById('checkout-time');
     const checkoutRecap = document.getElementById('checkout-recap');
+    const checkoutError = document.getElementById('checkout-error');
+    const checkoutOrderItemsInput = document.getElementById('checkout-order-items');
+    const checkoutOrderTotalInput = document.getElementById('checkout-order-total');
+    const checkoutPaymentMethodInput = document.getElementById('checkout-payment-method');
+    const checkoutSubmitBtn = checkoutForm ? checkoutForm.querySelector('.cart-checkout-btn') : null;
 
     // Confirmation view
     const confirmationNumber = document.getElementById('confirmation-number');
@@ -578,6 +586,15 @@ function initCart() {
             Paying via <strong>${paymentMethodLabel(selectedPaymentMethod)}</strong> &middot;
             Total <strong>${money(getOrderTotal())}</strong>
         `;
+
+        if (checkoutOrderItemsInput) {
+            checkoutOrderItemsInput.value = cart
+                .map(item => `${item.qty}x ${item.name}${item.note ? ` (note: ${item.note})` : ''} — ${money(item.price * item.qty)}`)
+                .join('\n');
+        }
+        if (checkoutOrderTotalInput) checkoutOrderTotalInput.value = money(getOrderTotal());
+        if (checkoutPaymentMethodInput) checkoutPaymentMethodInput.value = paymentMethodLabel(selectedPaymentMethod);
+
         showView('delivery');
     }
 
@@ -585,23 +602,50 @@ function initCart() {
 
     checkoutForm.addEventListener('submit', (e) => {
         e.preventDefault();
+        if (checkoutError) checkoutError.hidden = true;
+
         const total = getOrderTotal();
         const dateLabel = checkoutDateInput.value
             ? new Date(checkoutDateInput.value + 'T00:00:00').toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })
             : '';
         const timeLabel = checkoutTimeSelect.value;
-
         const orderNumber = 'SC-' + Math.floor(100000 + Math.random() * 900000);
-        confirmationNumber.textContent = `#${orderNumber}`;
-        confirmationPayment.textContent = `Payment: ${paymentMethodLabel(selectedPaymentMethod)}`;
-        confirmationDelivery.textContent = `Arriving ${dateLabel}, ${timeLabel}`;
-        confirmationTotal.textContent = `Total charged: ${money(total)}`;
 
-        showView('confirmation');
-        cart = [];
-        renderCart();
-        checkoutForm.reset();
-        selectedPaymentMethod = '';
+        if (checkoutSubmitBtn) checkoutSubmitBtn.disabled = true;
+        showStatus('loading', 'Placing your order…');
+
+        const formData = new FormData(checkoutForm);
+        formData.set('_subject', `New order ${orderNumber} — Sweet Crumbs Bakery`);
+
+        fetch(FORMSPREE_ENDPOINT, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+        })
+            .then((response) => {
+                if (!response.ok) throw new Error('order-not-accepted');
+
+                confirmationNumber.textContent = `#${orderNumber}`;
+                confirmationPayment.textContent = `Payment: ${paymentMethodLabel(selectedPaymentMethod)}`;
+                confirmationDelivery.textContent = `Arriving ${dateLabel}, ${timeLabel}`;
+                confirmationTotal.textContent = `Total charged: ${money(total)}`;
+
+                showView('confirmation');
+                cart = [];
+                renderCart();
+                checkoutForm.reset();
+                selectedPaymentMethod = '';
+            })
+            .catch(() => {
+                statusOverlay.hidden = true;
+                if (checkoutError) {
+                    checkoutError.textContent = "We couldn't place your order — please check your connection and try again.";
+                    checkoutError.hidden = false;
+                }
+            })
+            .finally(() => {
+                if (checkoutSubmitBtn) checkoutSubmitBtn.disabled = false;
+            });
     });
 
     /* ---- Wire up open / close ---- */
