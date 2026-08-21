@@ -92,8 +92,30 @@ document.addEventListener('DOMContentLoaded', function () {
     if (form && status) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            status.textContent = "Thanks for reaching out! We'll get back to you soon.";
-            form.reset();
+            status.textContent = 'Sending…';
+
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        status.textContent = "Thanks for reaching out! We'll get back to you soon.";
+                        form.reset();
+                    } else {
+                        response.json().then((data) => {
+                            status.textContent = (data && data.errors)
+                                ? data.errors.map(err => err.message).join(', ')
+                                : 'Oops! Something went wrong. Please try again.';
+                        }).catch(() => {
+                            status.textContent = 'Oops! Something went wrong. Please try again.';
+                        });
+                    }
+                })
+                .catch(() => {
+                    status.textContent = 'Network error — please check your connection and try again.';
+                });
         });
     }
 
