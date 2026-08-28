@@ -150,6 +150,45 @@ nav a.cart-link {
     line-height: 1;
 }
 
+.nav-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+
+.currency-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.45);
+    color: white;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background var(--transition), transform var(--transition);
+    white-space: nowrap;
+}
+.currency-toggle:hover {
+    background: rgba(255,255,255,0.32);
+}
+.currency-toggle:active {
+    transform: scale(0.96);
+}
+.currency-toggle .currency-swap-icon {
+    font-size: 0.85rem;
+    line-height: 1;
+}
+
 .hamburger{
     display: none;
     flex-direction: column;
@@ -300,15 +339,186 @@ nav a.cart-link {
     border-radius: 4.5rem;
     border: 2px solid var(--secondary);
     transition: transform var(--transition);
+    transition: transform 0.6s cubic-bezier(.2,.8,.2,1);
 }
 .card:hover img {
-    transform: scale(1.04);
+    transform: scale(1.045);
 }
 .card h3, .card p {
     padding: 0.5rem; 
 }
 .card p {
     color: #555;
+}
+
+/* ---- About page: Our Story ---- */
+.section-eyebrow {
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+.story-section {
+    padding: 1rem 0 0;
+    background-image: url("img.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: scroll;
+    content-visibility: auto;
+    contain-intrinsic-size: 700px;
+}
+.story-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    margin-top: 2rem;
+}
+.story-pullquote {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.1rem;
+    color: var(--accent);
+    line-height: 1.3;
+    border-left: 3px solid var(--primary);
+    padding-left: 1.5rem;
+    margin: 0.5rem 0;
+}
+.story-pullquote span {
+    display: block;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #888;
+    margin-top: 0.9rem;
+}
+
+/* ---- About page: stats strip ---- */
+.stats-strip {
+    background: var(--accent);
+    padding: 2.5rem 0;
+    margin-top: 3rem;
+}
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.5rem;
+    text-align: center;
+    padding: 0 2rem;
+}
+.stat-item {
+    padding: 0 0.5rem;
+}
+.stat-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'Great Vibes', cursive;
+}
+.stat-label {
+    display: block;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    margin-top: 0.35rem;
+}
+
+/* ---- About page: Meet Our Bakers ---- */
+.team-section {
+    padding: 3.5rem 0;
+    background-color: var(--secondary);
+}
+.team-intro {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 2.5rem;
+    color: #666;
+    line-height: 1.7;
+}
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+}
+.team-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    padding: 2rem 1.75rem 2.25rem;
+    text-align: center;
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+.team-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.15);
+}
+.team-avatar {
+    width: 148px;
+    height: 148px;
+    margin: 0 auto 1.25rem;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 0 0 4px var(--secondary), 0 0 0 7px var(--primary);
+}
+.team-avatar svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.team-card h3 {
+    font-size: 1.3rem;
+    color: var(--accent);
+    margin-bottom: 0.2rem;
+}
+.team-role {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 0.9rem;
+}
+.team-bio {
+    color: #555;
+    line-height: 1.65;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+.team-quote {
+    font-style: italic;
+    color: #777;
+    font-size: 0.9rem;
+    border-top: 1px solid #eee;
+    padding-top: 0.9rem;
+    margin: 0;
+}
+
+/* ---- About page: closing CTA ---- */
+.about-cta {
+    padding: 3.5rem 0 4.5rem;
+    background-image: url("img.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: scroll;
+    content-visibility: auto;
+    contain-intrinsic-size: 500px;
+}
+.about-cta-inner {
+    text-align: center;
+}
+.about-cta-inner h2 {
+    margin-bottom: 0.6rem;
+}
+.about-cta-inner p {
+    color: #666;
+    margin-bottom: 1.5rem;
 }
 
 /*Testimonials*/
@@ -424,7 +634,7 @@ nav a.cart-link {
     box-shadow: 4px 7px 8px rgba(146, 141, 141, 0.2);
     border-radius: 8px;
     max-width: 1100px;
-    height: 30rem;
+    height: auto;
     margin-left: auto;
     margin-right: auto;
 }
@@ -434,6 +644,89 @@ nav a.cart-link {
     font-size: 2rem;
     color: var(--accent);
     text-align: center;
+}
+
+.contact-section .section-eyebrow {
+    margin-bottom: 0.35rem;
+}
+
+.contact-intro {
+    text-align: center;
+    color: #777;
+    margin-bottom: 2.5rem;
+}
+
+/* ---- Contact: email vs WhatsApp chooser ---- */
+.contact-choice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.75rem;
+    max-width: 46rem;
+    margin: 0 auto 3rem;
+}
+.contact-choice-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.6rem;
+    background: var(--secondary);
+    border: 2px solid rgba(160, 82, 45, 0.12);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.contact-choice-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-6px);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.12);
+}
+.contact-choice-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    color: white;
+    margin-bottom: 0.4rem;
+}
+.contact-choice-icon-email {
+    background: var(--accent);
+}
+.contact-choice-icon-whatsapp {
+    background: #25d366;
+}
+.contact-choice-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent);
+}
+.contact-choice-desc {
+    color: #777;
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+.contact-choice-cta {
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--primary);
+    margin-top: 0.3rem;
+}
+.contact-choice-whatsapp .contact-choice-cta {
+    color: #25d366;
+}
+
+/* Gentle highlight when the page scrolls to the form via the Email card */
+#contact-form:target {
+    animation: contactFormPulse 1.4s ease;
+    border-radius: 12px;
+}
+@keyframes contactFormPulse {
+    0% { box-shadow: 0 0 0 0 rgba(212, 163, 115, 0.55); }
+    100% { box-shadow: 0 0 0 22px rgba(212, 163, 115, 0); }
 }
 
 .contact-form{
@@ -750,6 +1043,55 @@ nav a.cart-link {
     text-align: center;
     margin-top: 2rem;
     line-height: 1.6;
+}
+
+.delivery-location {
+    padding: 0.9rem 1.5rem;
+    border-top: 1px solid rgba(160, 82, 45, 0.15);
+    border-bottom: 1px solid rgba(160, 82, 45, 0.15);
+    background: var(--secondary);
+}
+.delivery-location label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+.delivery-location select {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    border-radius: 0.5rem;
+    border: 2px solid var(--primary);
+    font-family: inherit;
+    font-size: 14px;
+    background: white;
+    color: #333;
+    cursor: pointer;
+}
+.delivery-location select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.15);
+}
+.delivery-location-hint {
+    font-size: 0.76rem;
+    color: #888;
+    margin-top: 0.5rem;
+    line-height: 1.4;
+}
+.delivery-state-summary {
+    font-size: 0.85rem;
+    color: #666;
+    background: var(--secondary);
+    border-radius: 0.5rem;
+    padding: 0.6rem 0.85rem;
+    margin-bottom: 1rem;
+}
+.delivery-state-summary strong {
+    color: var(--accent);
 }
 
 .cart-item {
@@ -1386,8 +1728,27 @@ footer {
 .about-text p{
     font-size: 1rem;
     padding: 0 1rem;
-}    
+}
 
-
+/*Adjustment for restructured About page sections*/
+.story-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+.story-pullquote {
+    font-size: 1.7rem;
+}
+.stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+}
+    .story-section,
+    .team-section,
+    .about-cta {
+        background-image: url("mobile img.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        background-attachment: scroll;
+    }
     
 }

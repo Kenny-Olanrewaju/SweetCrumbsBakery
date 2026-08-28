@@ -14,18 +14,26 @@
     <!--Navbar -->
     <header id="navbar">
         <h1>Sweet Crumbs</h1>
-        <nav id="nav-links">
-            <a href="index.html" class="active" aria-current="page">Home</a>
-            <a href="about.html">About</a>
-            <a href="menu.html">Menu</a>
-            <a href="contact.html">Contact</a>
-            <a href="#" id="orders-link" class="cart-link" aria-haspopup="dialog">Orders<span class="cart-badge" id="cart-badge">0</span></a>
-        </nav>
-        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
-            <span class="hamburger-bar"></span>
-            <span class="hamburger-bar"></span>
-            <span class="hamburger-bar"></span>
-        </button>
+        <div class="nav-wrapper">
+            <nav id="nav-links">
+                <a href="index.html" class="active" aria-current="page">Home</a>
+                <a href="about.html">About</a>
+                <a href="menu.html">Menu</a>
+                <a href="contact.html">Contact</a>
+                <a href="#" id="orders-link" class="cart-link" aria-haspopup="dialog">Orders<span class="cart-badge" id="cart-badge">0</span></a>
+            </nav>
+            <div class="header-actions">
+                <button type="button" class="currency-toggle" id="currency-toggle" aria-label="Prices shown in US Dollars. Tap to switch to Nigerian Naira.">
+                    <span class="currency-swap-icon" aria-hidden="true">&#8646;</span>
+                    <span id="currency-toggle-label">USD</span>
+                </button>
+                <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                </button>
+            </div>
+        </div>
     </header>
     <!--Hero-section-->
     <section class="hero">
@@ -102,7 +110,39 @@
             </div>
         </div>
     </div>
-
+    <!--FAQ-section-->
+    <section class="faq-section">
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            <p class="faq-intro">Can't find what you're looking for? Send us a message below and we'll get back to you.</p>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>How far in advance do I need to order a custom cake?</summary>
+                    <p>We recommend at least 5&ndash;7 days' notice for custom or tiered cakes, and 48 hours for simpler cake orders. Rush orders may be possible depending on our schedule &mdash; just reach out and ask.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What areas do you deliver to?</summary>
+                    <p>We deliver nationwide across all 36 states and the FCT. Delivery fees are grouped into zones by distance from our Lagos bakery &mdash; pick your state at checkout to see your exact fee, and enjoy free delivery within Lagos on orders over $40.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What payment methods do you accept?</summary>
+                    <p>You can pay by card at checkout, by bank transfer (we hold your order for 30 minutes while we confirm payment), or in cash/by card directly to the delivery rider.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I change or cancel my order after placing it?</summary>
+                    <p>Yes, as long as it hasn't gone into production. Contact us as soon as possible with your order number and we'll do our best to accommodate changes or cancellations.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Do you cater to dietary restrictions or allergies?</summary>
+                    <p>We offer a small selection of vegan and gluten-free items, and can adapt some recipes on request. Please mention any allergies in your order notes so our bakers can take extra care.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What are your opening hours?</summary>
+                    <p>We're open Monday&ndash;Saturday, 7:00 AM to 7:00 PM, and Sunday 8:00 AM to 3:00 PM. Deliveries are scheduled within these hours.</p>
+                </details>
+            </div>
+        </div>
+    </section>
     <!--Testimonials-section-->
     <section class="testimonials">
         <div class="container">
@@ -187,7 +227,7 @@
             <h4>Visit &amp; Contact</h4>
             <address>
                 Victoria Island<br>
-                Alfred Rewane, Lagos 10801<br>
+                1 Akin Adesola Street, Lagos 106104<br>
                 <a href="tel:+2349049357967">+234(904) 935-7967</a><br>
                 <a href="mailto:kennycool202421@gmail.com" onclick="window.open('https://mail.google.com/mail/?view=cm&fs=1&to=kennycool202421@gmail.com', '_blank', 'noopener,noreferrer');">✉hello@sweetcrumbsbakery.com</a>
             </address>
@@ -195,7 +235,7 @@
 
         <div class="footer-col">
             <h4>Delivery &amp; Hours</h4>
-            <p>We deliver within a 10-mile radius of downtown Maplewood.<br>Free delivery on orders over $40.</p>
+            <p>We deliver nationwide across Nigeria &mdash; fees vary by state.<br>Free delivery within Lagos on orders over <span id="footer-delivery-amount">$40</span>.</p>
             <p>Mon&ndash;Sat: 7:00 AM &ndash; 7:00 PM<br>Sun: 8:00 AM &ndash; 3:00 PM</p>
         </div>
     </div>
@@ -215,6 +255,13 @@
     <div class="cart-view" id="cart-view">
         <div class="cart-items" id="cart-items">
             <p class="cart-empty" id="cart-empty">Your order is empty. Browse the menu and tap "View Details" on anything that looks good.</p>
+        </div>
+        <div class="delivery-location">
+            <label for="delivery-state">Delivering to</label>
+            <select id="delivery-state">
+                <option value="" disabled selected>Select your state</option>
+            </select>
+            <p class="delivery-location-hint" id="delivery-location-hint">We deliver nationwide &mdash; fees vary by distance from our Lagos bakery.</p>
         </div>
         <div class="cart-summary">
             <p class="cart-delivery-hint" id="cart-delivery-hint"></p>
@@ -338,6 +385,7 @@
     <div class="checkout-view" id="checkout-view" hidden>
         <button type="button" class="cart-back-btn" id="checkout-back-btn">&larr; Back to payment options</button>
         <h3 class="cart-step-heading">Delivery details</h3>
+        <p class="delivery-state-summary" id="delivery-state-summary"></p>
         <form id="checkout-form">
             <label for="checkout-name">Full name</label>
             <input type="text" id="checkout-name" name="name" autocomplete="name" required>
@@ -371,6 +419,7 @@
             <input type="hidden" id="checkout-order-items" name="order_items">
             <input type="hidden" id="checkout-order-total" name="order_total">
             <input type="hidden" id="checkout-payment-method" name="payment_method">
+            <input type="hidden" id="checkout-delivery-state" name="delivery_state">
 
             <p class="field-error" id="checkout-error" hidden></p>
 

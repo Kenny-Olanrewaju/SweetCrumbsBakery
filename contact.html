@@ -14,55 +14,52 @@
     <!--Navbar-->
     <header id="navbar">
         <h1>Sweet Crumbs</h1>
-    <nav id="nav-links">
+    <div class="nav-wrapper">
+        <nav id="nav-links">
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
             <a href="menu.html">Menu</a>
             <a href="contact.html" class="active" aria-current="page">Contact</a>
             <a href="#" id="orders-link" class="cart-link" aria-haspopup="dialog">Orders<span class="cart-badge" id="cart-badge">0</span></a>
         </nav>
-        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
-            <span class="hamburger-bar"></span>
-            <span class="hamburger-bar"></span>
-            <span class="hamburger-bar"></span>
-        </button>
-    </header>
-    <!--FAQ-section-->
-    <section class="faq-section">
-        <div class="container">
-            <h2>Frequently Asked Questions</h2>
-            <p class="faq-intro">Can't find what you're looking for? Send us a message below and we'll get back to you.</p>
-            <div class="faq-list">
-                <details class="faq-item">
-                    <summary>How far in advance do I need to order a custom cake?</summary>
-                    <p>We recommend at least 5&ndash;7 days' notice for custom or tiered cakes, and 48 hours for simpler cake orders. Rush orders may be possible depending on our schedule &mdash; just reach out and ask.</p>
-                </details>
-                <details class="faq-item">
-                    <summary>What areas do you deliver to?</summary>
-                    <p>We deliver within a 10-mile radius of downtown Maplewood. Delivery is free on orders over $40; orders below that carry a flat delivery fee, shown at checkout before you confirm payment.</p>
-                </details>
-                <details class="faq-item">
-                    <summary>What payment methods do you accept?</summary>
-                    <p>You can pay by card at checkout, by bank transfer (we hold your order for 30 minutes while we confirm payment), or in cash/by card directly to the delivery rider.</p>
-                </details>
-                <details class="faq-item">
-                    <summary>Can I change or cancel my order after placing it?</summary>
-                    <p>Yes, as long as it hasn't gone into production. Contact us as soon as possible with your order number and we'll do our best to accommodate changes or cancellations.</p>
-                </details>
-                <details class="faq-item">
-                    <summary>Do you cater to dietary restrictions or allergies?</summary>
-                    <p>We offer a small selection of vegan and gluten-free items, and can adapt some recipes on request. Please mention any allergies in your order notes so our bakers can take extra care.</p>
-                </details>
-                <details class="faq-item">
-                    <summary>What are your opening hours?</summary>
-                    <p>We're open Monday&ndash;Saturday, 7:00 AM to 7:00 PM, and Sunday 8:00 AM to 3:00 PM. Deliveries are scheduled within these hours.</p>
-                </details>
-            </div>
+        <div class="header-actions">
+            <button type="button" class="currency-toggle" id="currency-toggle" aria-label="Prices shown in US Dollars. Tap to switch to Nigerian Naira.">
+                <span class="currency-swap-icon" aria-hidden="true">&#8646;</span>
+                <span id="currency-toggle-label">USD</span>
+            </button>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+            </button>
         </div>
-    </section>
+    </div>
+    </header>
+
     <!--Contact-form-section-->
     <section class="contact-section">
+        <p class="section-eyebrow">Get In Touch</p>
         <h2>Let's Keep In Touch</h2>
+        <p class="contact-intro">Pick whichever's easiest &mdash; we're on both, every day.</p>
+
+        <div class="contact-choice-grid">
+            <a class="contact-choice-card" href="#contact-form">
+                <span class="contact-choice-icon contact-choice-icon-email" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3.3 6.5 12 13 20.7 6.5"/></svg>
+                </span>
+                <span class="contact-choice-title">Email Us</span>
+                <span class="contact-choice-desc">Best for custom cake requests and detailed questions. We reply within 24 hours.</span>
+                <span class="contact-choice-cta">Write a message &rsaquo;</span>
+            </a>
+            <a class="contact-choice-card contact-choice-whatsapp" href="https://wa.me/2349049357967?text=Hi%20Sweet%20Crumbs%20Bakery%2C%20I%27d%20like%20to%20ask%20about..." target="_blank" rel="noopener noreferrer">
+                <span class="contact-choice-icon contact-choice-icon-whatsapp" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="26" height="26" fill="#fff"><path d="M12 2C6.48 2 2 6.13 2 11.22c0 2.02.72 3.89 1.94 5.42L2.6 21.4l4.98-1.55A10.9 10.9 0 0 0 12 20.44c5.52 0 10-4.13 10-9.22S17.52 2 12 2Z"/><path d="M9.1 7.6c-.28-.6-.5-.6-.73-.6-.2 0-.42.03-.65.28-.22.25-.86.85-.86 2.06 0 1.2.88 2.37 1 2.53.13.17 1.7 2.72 4.2 3.7 2.08.83 2.5.66 2.95.62.45-.04 1.45-.6 1.65-1.17.2-.58.2-1.08.14-1.18-.06-.1-.22-.16-.46-.28-.24-.12-1.45-.72-1.68-.8-.22-.08-.39-.12-.55.12-.16.24-.63.8-.78.96-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.95-1.2-.72-.64-1.2-1.44-1.35-1.68-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.53-1.32-.73-1.8Z" fill="#25d366"/></svg>
+                </span>
+                <span class="contact-choice-title">Chat on WhatsApp</span>
+                <span class="contact-choice-desc">Best for quick order questions. Usually the fastest way to reach us.</span>
+                <span class="contact-choice-cta">Start a chat &rsaquo;</span>
+            </a>
+        </div>
 
         <form class="contact-form" id="contact-form" action="https://formspree.io/f/mvkpygyk" method="POST">
             <label class="sr-only" for="name">Your Name</label>
@@ -106,16 +103,16 @@
         <div class="footer-col">
             <h4>Visit &amp; Contact</h4>
             <address>
-                123 Baker Street<br>
-                Maplewood, NY 10801<br>
-                <a href="tel:+15551234567">+1 (555) 123-4567</a><br>
-                <a href="mailto:hello@sweetcrumbsbakery.com">hello@sweetcrumbsbakery.com</a>
+                Victoria Island<br>
+                1 Akin Adesola Street, Lagos 106104<br>
+                <a href="tel:+2349049357967">+234(904) 935-7967</a><br>
+                <a href="mailto:kennycool202421@gmail.com" onclick="window.open('https://mail.google.com/mail/?view=cm&fs=1&to=kennycool202421@gmail.com', '_blank', 'noopener,noreferrer');">✉hello@sweetcrumbsbakery.com</a>
             </address>
         </div>
 
         <div class="footer-col">
             <h4>Delivery &amp; Hours</h4>
-            <p>We deliver within a 10-mile radius of downtown Maplewood.<br>Free delivery on orders over $40.</p>
+            <p>We deliver nationwide across Nigeria &mdash; fees vary by state.<br>Free delivery within Lagos on orders over <span id="footer-delivery-amount">$40</span>.</p>
             <p>Mon&ndash;Sat: 7:00 AM &ndash; 7:00 PM<br>Sun: 8:00 AM &ndash; 3:00 PM</p>
         </div>
     </div>
@@ -135,6 +132,13 @@
     <div class="cart-view" id="cart-view">
         <div class="cart-items" id="cart-items">
             <p class="cart-empty" id="cart-empty">Your order is empty. Browse the menu and tap "View Details" on anything that looks good.</p>
+        </div>
+        <div class="delivery-location">
+            <label for="delivery-state">Delivering to</label>
+            <select id="delivery-state">
+                <option value="" disabled selected>Select your state</option>
+            </select>
+            <p class="delivery-location-hint" id="delivery-location-hint">We deliver nationwide &mdash; fees vary by distance from our Lagos bakery.</p>
         </div>
         <div class="cart-summary">
             <p class="cart-delivery-hint" id="cart-delivery-hint"></p>
@@ -258,6 +262,7 @@
     <div class="checkout-view" id="checkout-view" hidden>
         <button type="button" class="cart-back-btn" id="checkout-back-btn">&larr; Back to payment options</button>
         <h3 class="cart-step-heading">Delivery details</h3>
+        <p class="delivery-state-summary" id="delivery-state-summary"></p>
         <form id="checkout-form">
             <label for="checkout-name">Full name</label>
             <input type="text" id="checkout-name" name="name" autocomplete="name" required>
@@ -291,6 +296,7 @@
             <input type="hidden" id="checkout-order-items" name="order_items">
             <input type="hidden" id="checkout-order-total" name="order_total">
             <input type="hidden" id="checkout-payment-method" name="payment_method">
+            <input type="hidden" id="checkout-delivery-state" name="delivery_state">
 
             <p class="field-error" id="checkout-error" hidden></p>
 

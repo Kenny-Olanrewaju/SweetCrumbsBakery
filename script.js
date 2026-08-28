@@ -43,17 +43,196 @@ const productData = {
     "Hazelnut Mousse": { price: "$6.50", desc: "A light, airy hazelnut mousse layered over chocolate sponge and topped with toasted hazelnut shavings." }
 };
 
-// ---- Formspree endpoint used for both the contact form and order notifications ----
+// ---- Formspree endpoint
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mvkpygyk';
 
-// ---- Shopping cart state (in-memory for this page view) ----
-const DELIVERY_FEE = 4.99;
+// ---- Shopping cart state 
 const FREE_DELIVERY_THRESHOLD = 40;
-let cart = []; // { name, price (number), qty, note, img }
+let cart = []; // { name, price (number, always stored in USD), qty, note, img }
+
+/* =========================================================
+   Nigeria delivery pricing — tiered by distance from our
+   Lagos bakery, closest to farthest. Fees are stored in USD
+   (same base currency as everything else) and converted for
+   display by formatMoney(). Covers all 36 states + the FCT.
+   ========================================================= */
+const NIGERIA_DELIVERY_TIERS = [
+    {
+        id: 'lagos',
+        label: 'Lagos (Local Delivery)',
+        fee: 2.50,
+        freeEligible: true, 
+        states: ['Lagos']
+    },
+    {
+        id: 'southwest',
+        label: 'South West (Neighboring States)',
+        fee: 5.50,
+        freeEligible: false,
+        states: ['Ogun', 'Oyo', 'Osun', 'Ondo', 'Ekiti']
+    },
+    {
+        id: 'south-south-east',
+        label: 'South South & South East',
+        fee: 8.50,
+        freeEligible: false,
+        states: ['Edo', 'Delta', 'Rivers', 'Bayelsa', 'Cross River', 'Akwa Ibom', 'Anambra', 'Enugu', 'Imo', 'Abia', 'Ebonyi']
+    },
+    {
+        id: 'north-central',
+        label: 'North Central & FCT',
+        fee: 10.50,
+        freeEligible: false,
+        states: ['Kwara', 'Kogi', 'Niger', 'Benue', 'Plateau', 'Nasarawa', 'Federal Capital Territory (Abuja)']
+    },
+    {
+        id: 'far-north',
+        label: 'North West & North East (Farthest)',
+        fee: 13.50,
+        freeEligible: false,
+        states: ['Kano', 'Kaduna', 'Katsina', 'Jigawa', 'Sokoto', 'Zamfara', 'Kebbi', 'Bauchi', 'Gombe', 'Adamawa', 'Borno', 'Yobe', 'Taraba']
+    }
+];
+
+function getStateTier(state) {
+    return NIGERIA_DELIVERY_TIERS.find(tier => tier.states.includes(state)) || null;
+}
+
+// Fills a <select> with every state, grouped into delivery tiers with the
+// tier's fee shown in the optgroup label. Preserves the current selection
+// (if any) — used both on first load and whenever currency is toggled, since
+// the fee amounts shown in the labels need to switch between $ and ₦.
+function populateDeliveryStateOptions(selectEl) {
+    if (!selectEl) return;
+    const previousValue = selectEl.value;
+    selectEl.innerHTML = '';
+
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.textContent = 'Select your state';
+    placeholder.disabled = true;
+    selectEl.appendChild(placeholder);
+
+    NIGERIA_DELIVERY_TIERS.forEach(tier => {
+        const group = document.createElement('optgroup');
+        group.label = `${tier.label} \u2014 ${formatMoney(tier.fee)} delivery`;
+        tier.states.forEach(state => {
+            const opt = document.createElement('option');
+            opt.value = state;
+            opt.textContent = state;
+            group.appendChild(opt);
+        });
+        selectEl.appendChild(group);
+    });
+
+    if (previousValue && getStateTier(previousValue)) {
+        selectEl.value = previousValue;
+    } else {
+        placeholder.selected = true;
+    }
+}
+
+//Currency conversion (USD <-> NGN)
+const RATE_STORAGE_KEY = 'sc_usd_ngn_rate';
+const RATE_STORAGE_TIME_KEY = 'sc_usd_ngn_rate_time';
+const RATE_CACHE_MS = 12 * 60 * 60 * 1000; // refetch at most every 12 hours
+const FALLBACK_USD_TO_NGN = 1530; // used only if the live rate can't be fetched and none is cached
+
+let currentCurrency = 'USD'; // USD is always the default on page load
+let usdToNgnRate = FALLBACK_USD_TO_NGN;
+
+try {
+    // Only the cached exchange rate is restored between visits — the
+    // selected currency itself is intentionally NOT restored, so every
+    // page load starts in USD regardless of what was picked last time.
+    const savedRate = parseFloat(localStorage.getItem(RATE_STORAGE_KEY));
+    if (savedRate > 0) usdToNgnRate = savedRate;
+} catch (err) {
+    // localStorage unavailable (e.g. private browsing) — fall back to in-memory defaults
+}
+
+// Converts a USD amount into the currently selected display currency and formats it.
+function formatMoney(usdAmount) {
+    if (currentCurrency === 'NGN') {
+        const ngnAmount = usdAmount * usdToNgnRate;
+        return '\u20a6' + ngnAmount.toLocaleString('en-NG', { maximumFractionDigits: 0 });
+    }
+    return '$' + usdAmount.toFixed(2);
+}
+
+// Re-renders every part of the page that shows a price, for the current view.
+function refreshAllMoneyDisplays() {
+    if (window.refreshCartDisplay) window.refreshCartDisplay();
+    if (window.refreshModalDisplay) window.refreshModalDisplay();
+    updateFooterDeliveryAmount();
+}
+
+function updateFooterDeliveryAmount() {
+    document.querySelectorAll('#footer-delivery-amount').forEach(el => {
+        el.textContent = formatMoney(FREE_DELIVERY_THRESHOLD);
+    });
+}
+
+function updateCurrencyToggleUI() {
+    document.querySelectorAll('.currency-toggle').forEach(btn => {
+        const label = btn.querySelector('#currency-toggle-label') || btn.querySelector('span:last-child');
+        if (label) label.textContent = currentCurrency;
+        const otherCurrency = currentCurrency === 'USD' ? 'Nigerian Naira' : 'US Dollars';
+        const currentLabel = currentCurrency === 'USD' ? 'US Dollars' : 'Nigerian Naira';
+        btn.setAttribute('aria-label', `Prices shown in ${currentLabel}. Tap to switch to ${otherCurrency}.`);
+    });
+}
+
+function setCurrency(nextCurrency) {
+    if (nextCurrency !== 'USD' && nextCurrency !== 'NGN') return;
+    currentCurrency = nextCurrency;
+    updateCurrencyToggleUI();
+    refreshAllMoneyDisplays();
+}
+
+function initCurrencyToggle() {
+    updateCurrencyToggleUI();
+    updateFooterDeliveryAmount();
+
+    document.querySelectorAll('.currency-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            setCurrency(currentCurrency === 'USD' ? 'NGN' : 'USD');
+        });
+    });
+}
+
+// Fetches a live USD -> NGN rate from a free, keyless exchange-rate API and
+// caches it for 12 hours. Falls back silently to the cached/fallback rate
+// on any network error, so the site never breaks if the request fails.
+async function fetchExchangeRate() {
+    let cachedTime = 0;
+    try {
+        cachedTime = parseInt(localStorage.getItem(RATE_STORAGE_TIME_KEY), 10) || 0;
+    } catch (err) { /* ignore */ }
+
+    if (cachedTime && (Date.now() - cachedTime) < RATE_CACHE_MS) return;
+
+    try {
+        const response = await fetch('https://open.er-api.com/v6/latest/USD');
+        const data = await response.json();
+        if (data && data.result === 'success' && data.rates && data.rates.NGN) {
+            usdToNgnRate = data.rates.NGN;
+            try {
+                localStorage.setItem(RATE_STORAGE_KEY, String(usdToNgnRate));
+                localStorage.setItem(RATE_STORAGE_TIME_KEY, String(Date.now()));
+            } catch (err) { /* ignore */ }
+            refreshAllMoneyDisplays();
+        }
+    } catch (err) {
+        // Offline or the exchange-rate API is unreachable — keep using the
+        // last cached rate (or the fallback) instead of breaking the page.
+    }
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
+    
 
     // Toggle mobile menu
     hamburger.addEventListener('click', () => {
@@ -129,10 +308,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     initProductModal();
     initCart();
+    initCurrencyToggle();
+    fetchExchangeRate();
 });
 
 /* =========================================================
-   Product details modal
+Product details modal
    ========================================================= */
 function initProductModal() {
     const overlay = document.getElementById('product-modal');
@@ -150,6 +331,7 @@ function initProductModal() {
     const noteInput = document.getElementById('modal-note');
     const orderStatus = document.getElementById('modal-order-status');
     let lastFocusedEl = null;
+    let currentModalUsdPrice = 0;
 
     // Turn every card's "Order now" link into a "View Details" trigger.
     // Ordering itself now happens inside the modal, which adds to the cart.
@@ -178,8 +360,10 @@ function initProductModal() {
             desc: 'A fresh-baked delicacy from Sweet Crumbs Bakery, made daily with quality ingredients.'
         };
 
+        currentModalUsdPrice = parseFloat(String(info.price).replace('$', '')) || 0;
+
         titleEl.textContent = name;
-        priceEl.textContent = info.price;
+        priceEl.textContent = formatMoney(currentModalUsdPrice);
         descEl.textContent = info.desc;
         if (cardImg) {
             imgEl.src = cardImg.src;
@@ -251,6 +435,14 @@ function initProductModal() {
         // Give the person a beat to see the confirmation, then close.
         setTimeout(closeModal, 900);
     });
+
+    // Re-renders the price shown in the currently open product modal (if any)
+    // in the newly selected currency. Called from the currency toggle.
+    window.refreshModalDisplay = function () {
+        if (overlay.classList.contains('open')) {
+            priceEl.textContent = formatMoney(currentModalUsdPrice);
+        }
+    };
 }
 
 /* =========================================================
@@ -283,6 +475,8 @@ function initCart() {
     const totalEl = document.getElementById('cart-total');
     const deliveryHintEl = document.getElementById('cart-delivery-hint');
     const checkoutBtn = document.getElementById('cart-checkout-btn');
+    const deliveryStateSelect = document.getElementById('delivery-state');
+    const deliveryStateSummary = document.getElementById('delivery-state-summary');
 
     // Payment method view
     const paymentMethodTotal = document.getElementById('payment-method-total');
@@ -319,6 +513,7 @@ function initCart() {
     const checkoutOrderItemsInput = document.getElementById('checkout-order-items');
     const checkoutOrderTotalInput = document.getElementById('checkout-order-total');
     const checkoutPaymentMethodInput = document.getElementById('checkout-payment-method');
+    const checkoutDeliveryStateInput = document.getElementById('checkout-delivery-state');
     const checkoutSubmitBtn = checkoutForm ? checkoutForm.querySelector('.cart-checkout-btn') : null;
 
     // Confirmation view
@@ -330,23 +525,23 @@ function initCart() {
 
     let lastFocusedEl = null;
     let selectedPaymentMethod = ''; // 'delivery' | 'card' | 'transfer'
-
-    function money(n) {
-        return '$' + n.toFixed(2);
-    }
+    let selectedDeliveryState = ''; // e.g. 'Lagos', 'Kano' — drives the delivery fee tier
 
     function getSubtotal() {
         return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
     }
 
-    function getDeliveryFee(subtotal) {
+    function getDeliveryFee(subtotal, state) {
         if (subtotal === 0) return 0;
-        return subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
+        const tier = getStateTier(state);
+        if (!tier) return 0; // no state chosen yet
+        if (tier.freeEligible && subtotal >= FREE_DELIVERY_THRESHOLD) return 0;
+        return tier.fee;
     }
 
     function getOrderTotal() {
         const subtotal = getSubtotal();
-        return subtotal + getDeliveryFee(subtotal);
+        return subtotal + getDeliveryFee(subtotal, selectedDeliveryState);
     }
 
     function paymentMethodLabel(method) {
@@ -357,7 +552,8 @@ function initCart() {
 
     function renderCart() {
         const subtotal = getSubtotal();
-        const deliveryFee = getDeliveryFee(subtotal);
+        const tier = getStateTier(selectedDeliveryState);
+        const deliveryFee = getDeliveryFee(subtotal, selectedDeliveryState);
         const total = subtotal + deliveryFee;
         const itemCount = cart.reduce((sum, item) => sum + item.qty, 0);
 
@@ -383,7 +579,7 @@ function initCart() {
                                 <span>${item.qty}</span>
                                 <button type="button" class="cart-qty-increase" data-name="${item.name}" aria-label="Increase quantity">+</button>
                             </div>
-                            <span class="cart-item-price">${money(item.price * item.qty)}</span>
+                            <span class="cart-item-price">${formatMoney(item.price * item.qty)}</span>
                         </div>
                         <button type="button" class="cart-remove-btn" data-name="${item.name}">Remove</button>
                     </div>
@@ -392,17 +588,29 @@ function initCart() {
             });
         }
 
-        subtotalEl.textContent = money(subtotal);
-        deliveryFeeEl.textContent = deliveryFee === 0 && subtotal > 0 ? 'FREE' : money(deliveryFee);
-        totalEl.textContent = money(total);
-        checkoutBtn.disabled = cart.length === 0;
-
-        if (subtotal > 0 && subtotal < FREE_DELIVERY_THRESHOLD) {
-            deliveryHintEl.textContent = `Add ${money(FREE_DELIVERY_THRESHOLD - subtotal)} more for free delivery`;
-        } else if (subtotal >= FREE_DELIVERY_THRESHOLD) {
-            deliveryHintEl.textContent = "You've unlocked free delivery!";
+        subtotalEl.textContent = formatMoney(subtotal);
+        if (!tier) {
+            deliveryFeeEl.textContent = '\u2014'; // em dash — no state chosen yet
+        } else if (deliveryFee === 0 && subtotal > 0) {
+            deliveryFeeEl.textContent = 'FREE';
         } else {
+            deliveryFeeEl.textContent = formatMoney(deliveryFee);
+        }
+        totalEl.textContent = formatMoney(total);
+        checkoutBtn.disabled = cart.length === 0 || !tier;
+
+        if (!cart.length) {
             deliveryHintEl.textContent = '';
+        } else if (!tier) {
+            deliveryHintEl.textContent = 'Select your delivery state above to see the delivery fee.';
+        } else if (tier.freeEligible) {
+            if (subtotal < FREE_DELIVERY_THRESHOLD) {
+                deliveryHintEl.textContent = `Add ${formatMoney(FREE_DELIVERY_THRESHOLD - subtotal)} more for free ${tier.label} delivery`;
+            } else {
+                deliveryHintEl.textContent = "You've unlocked free delivery!";
+            }
+        } else {
+            deliveryHintEl.textContent = `${tier.label} delivery: flat rate ${formatMoney(tier.fee)}`;
         }
     }
 
@@ -425,6 +633,15 @@ function initCart() {
         }
         renderCart();
     });
+
+    /* ---- Delivery state (drives the delivery fee tier) ---- */
+    if (deliveryStateSelect) {
+        populateDeliveryStateOptions(deliveryStateSelect);
+        deliveryStateSelect.addEventListener('change', () => {
+            selectedDeliveryState = deliveryStateSelect.value;
+            renderCart();
+        });
+    }
 
     /* ---- Panel open/close ---- */
     function openPanel() {
@@ -472,8 +689,8 @@ function initCart() {
 
     /* ---- Step 1 -> 2: choose payment method ---- */
     checkoutBtn.addEventListener('click', () => {
-        if (cart.length === 0) return;
-        paymentMethodTotal.textContent = `Order total: ${money(getOrderTotal())}`;
+        if (cart.length === 0 || !selectedDeliveryState) return;
+        paymentMethodTotal.textContent = `Order total: ${formatMoney(getOrderTotal())}`;
         showView('payment');
     });
     paymentBackBtn.addEventListener('click', () => showView('cart'));
@@ -487,14 +704,14 @@ function initCart() {
         selectedPaymentMethod = 'card';
         cardForm.reset();
         cardError.hidden = true;
-        cardRecap.innerHTML = `Charging <strong>${money(getOrderTotal())}</strong> to the card below.`;
-        cardPayBtnText.textContent = `Pay ${money(getOrderTotal())}`;
+        cardRecap.innerHTML = `Charging <strong>${formatMoney(getOrderTotal())}</strong> to the card below.`;
+        cardPayBtnText.textContent = `Pay ${formatMoney(getOrderTotal())}`;
         showView('card');
     });
 
     payTransferBtn.addEventListener('click', () => {
         selectedPaymentMethod = 'transfer';
-        transferAmountEl.textContent = money(getOrderTotal());
+        transferAmountEl.textContent = formatMoney(getOrderTotal());
         showView('transfer');
     });
 
@@ -584,16 +801,24 @@ function initCart() {
 
         checkoutRecap.innerHTML = `
             Paying via <strong>${paymentMethodLabel(selectedPaymentMethod)}</strong> &middot;
-            Total <strong>${money(getOrderTotal())}</strong>
+            Total <strong>${formatMoney(getOrderTotal())}</strong>
         `;
+
+        const deliveryTier = getStateTier(selectedDeliveryState);
+        if (deliveryStateSummary) {
+            deliveryStateSummary.innerHTML = deliveryTier
+                ? `Delivering to <strong>${selectedDeliveryState}</strong> &middot; ${deliveryTier.label}`
+                : '';
+        }
 
         if (checkoutOrderItemsInput) {
             checkoutOrderItemsInput.value = cart
-                .map(item => `${item.qty}x ${item.name}${item.note ? ` (note: ${item.note})` : ''} — ${money(item.price * item.qty)}`)
+                .map(item => `${item.qty}x ${item.name}${item.note ? ` (note: ${item.note})` : ''} — ${formatMoney(item.price * item.qty)}`)
                 .join('\n');
         }
-        if (checkoutOrderTotalInput) checkoutOrderTotalInput.value = money(getOrderTotal());
+        if (checkoutOrderTotalInput) checkoutOrderTotalInput.value = formatMoney(getOrderTotal());
         if (checkoutPaymentMethodInput) checkoutPaymentMethodInput.value = paymentMethodLabel(selectedPaymentMethod);
+        if (checkoutDeliveryStateInput) checkoutDeliveryStateInput.value = selectedDeliveryState;
 
         showView('delivery');
     }
@@ -610,6 +835,7 @@ function initCart() {
             : '';
         const timeLabel = checkoutTimeSelect.value;
         const orderNumber = 'SC-' + Math.floor(100000 + Math.random() * 900000);
+        const deliveredStateLabel = selectedDeliveryState;
 
         if (checkoutSubmitBtn) checkoutSubmitBtn.disabled = true;
         showStatus('loading', 'Placing your order…');
@@ -627,11 +853,13 @@ function initCart() {
 
                 confirmationNumber.textContent = `#${orderNumber}`;
                 confirmationPayment.textContent = `Payment: ${paymentMethodLabel(selectedPaymentMethod)}`;
-                confirmationDelivery.textContent = `Arriving ${dateLabel}, ${timeLabel}`;
-                confirmationTotal.textContent = `Total charged: ${money(total)}`;
+                confirmationDelivery.textContent = `Arriving ${dateLabel}, ${timeLabel} \u2014 ${deliveredStateLabel}`;
+                confirmationTotal.textContent = `Total charged: ${formatMoney(total)}`;
 
                 showView('confirmation');
                 cart = [];
+                selectedDeliveryState = '';
+                if (deliveryStateSelect) deliveryStateSelect.value = '';
                 renderCart();
                 checkoutForm.reset();
                 selectedPaymentMethod = '';
@@ -658,6 +886,31 @@ function initCart() {
     continueShoppingBtn.addEventListener('click', closePanel);
 
     renderCart();
+
+    // Re-renders every price currently on screen in the cart panel — the
+    // cart list itself plus whichever checkout step happens to be open —
+    // in the newly selected currency. Called from the currency toggle.
+    window.refreshCartDisplay = function () {
+        if (deliveryStateSelect) populateDeliveryStateOptions(deliveryStateSelect);
+        renderCart();
+
+        if (!paymentMethodView.hidden) {
+            paymentMethodTotal.textContent = `Order total: ${formatMoney(getOrderTotal())}`;
+        }
+        if (!cardPaymentView.hidden) {
+            cardRecap.innerHTML = `Charging <strong>${formatMoney(getOrderTotal())}</strong> to the card below.`;
+            cardPayBtnText.textContent = `Pay ${formatMoney(getOrderTotal())}`;
+        }
+        if (!transferView.hidden) {
+            transferAmountEl.textContent = formatMoney(getOrderTotal());
+        }
+        if (!checkoutView.hidden) {
+            checkoutRecap.innerHTML = `
+                Paying via <strong>${paymentMethodLabel(selectedPaymentMethod)}</strong> &middot;
+                Total <strong>${formatMoney(getOrderTotal())}</strong>
+            `;
+        }
+    };
 }
 
 function addToCart(newItem) {
@@ -675,3 +928,66 @@ function addToCart(newItem) {
         badge.textContent = itemCount;
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const counters = document.querySelectorAll(".counter");
+
+    if (!counters.length) return;
+
+    const observer = new IntersectionObserver((entries, observer) => {
+
+        entries.forEach(entry => {
+
+            if (!entry.isIntersecting) return;
+
+            const counter = entry.target;
+            const target = Number(counter.dataset.target);
+
+            let current = 0;
+            const duration = 1000;
+            const startTime = performance.now();
+
+            function animateCounter(currentTime) {
+
+                const progress = Math.min(
+                    (currentTime - startTime) / duration,
+                    1
+                );
+
+                // Smooth animation
+                current = Math.floor(progress * target);
+
+                // Keep the original suffix
+                let suffix = "";
+
+                if (target === 10 || target === 500) {
+                    suffix = "+";
+                } else if (target === 100) {
+                    suffix = "%";
+                }
+
+                counter.textContent = current + suffix;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateCounter);
+                } else {
+                    counter.textContent = target + suffix;
+                }
+            }
+
+            requestAnimationFrame(animateCounter);
+
+            // Only animate once
+            observer.unobserve(counter);
+        });
+
+    }, {
+        threshold: 0.5
+    });
+
+    counters.forEach(counter => {
+        observer.observe(counter);
+    });
+
+});
