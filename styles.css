@@ -363,6 +363,7 @@ nav a.cart-link {
 }
 .story-section {
     padding: 1rem 0 0;
+    background: url("bakery-desktop.webp");
 }
 .story-grid {
     display: grid;
@@ -495,6 +496,7 @@ nav a.cart-link {
 /* ---- About page: closing CTA ---- */
 .about-cta {
     padding: 3.5rem 0 4.5rem;
+    background: url("bakery-desktop.webp");
 }
 .about-cta-inner {
     text-align: center;
@@ -1729,7 +1731,7 @@ footer {
 }
 }
 /* ================================================
-   Menu page premium upgrades
+Menu page premium upgrades
    ================================================ */
 
 /* ---- Section divider ornament ---- */
@@ -2062,4 +2064,6 @@ footer {
     .floating-cart:hover {
         transform: translateY(-3px);
     }
+    .story-section{background: url("bakery-mobile.webp");}
+    .about-cta{background: url("bakery-mobile.webp");}
 }
