@@ -43,7 +43,6 @@ const productData = {
     "Hazelnut Mousse": { price: "$6.50", desc: "A light, airy hazelnut mousse layered over chocolate sponge and topped with toasted hazelnut shavings." },
     "Sourdough": { price: "$18", desc: "A classic sourdough loaf with a crisp crust and a chewy, flavorful interior." },
     "Brioche": { price: "$12", desc: "A soft, buttery French bread with a tender crumb, perfect for breakfast or as a base for decadent sandwiches." }
-    "Chocolate Cupcake": { price: "$5", desc: "Pure chocolate bliss in every bite. Our signature deep-cocoa sponge is incredibly moist, tender, and baked fresh daily. We crown each one with a velvety swirl of rich chocolate buttercream and a scatter of decadent chocolate curls. It is the ultimate treat for true chocoholics." }
 };
 
 // ---- Formspree endpoint
