@@ -35,61 +35,118 @@
         </div>
     </div>
     </header>
+    <!--Menu hero-->
+    <section class="menu-hero">
+        <div class="menu-hero-inner">
+            <p class="section-eyebrow section-eyebrow-light">Our Menu</p>
+            <h2>Baked Fresh. Made to Crave.</h2>
+            <p class="menu-hero-sub">From slow-fermented artisan breads to delicate pastries and celebration-worthy cakes, discover something worth savoring.</p>
+            <a href="#menu-toolbar" class="btn menu-hero-cta">Explore Best Sellers &#8595;</a>
+        </div>
+    </section>
+
+    <!--Today's Favorites-->
+    <section class="favorites-section">
+        <div class="section-divider"><span>&#10022;</span> Fresh From The Oven</div>
+        <h2 class="favorites-heading">Today's Favorites</h2>
+        <div class="favorites-strip">
+            <div class="card favorite-card" data-category="pastries">
+                <img src="https://i.pinimg.com/1200x/4b/70/44/4b704448f408deb438903cb67e0b2620.jpg" alt="Cinnamon Roll" loading="lazy">
+                <h3>Cinnamon Roll</h3>
+                <p>Soft, pillowy dough swirled with brown-sugar cinnamon filling.</p>
+                <a href="contact.html" class="btn2">Order now</a>
+            </div>
+            <div class="card favorite-card" data-category="pastries">
+                <img src="https://i.pinimg.com/1200x/da/4b/92/da4b92ed95376a48840b2001e3d67180.jpg" alt="Doughnut" loading="lazy">
+                <h3>Doughnut</h3>
+                <p>Yeast-raised and fried to order, glazed while still warm.</p>
+                <a href="contact.html" class="btn2">Order now</a>
+            </div>
+            <div class="card favorite-card" data-category="pastries">
+                <img src="https://i.pinimg.com/736x/d1/4e/a0/d14ea027bcaf827de75bd1cfcbc3fc32.jpg" alt="Fruit Danish" loading="lazy">
+                <h3>Fruit Danish</h3>
+                <p>Flaky laminated pastry cradling sweet cream cheese and seasonal fruit.</p>
+                <a href="contact.html" class="btn2">Order now</a>
+            </div>
+        </div>
+        <p class="favorites-jump"><a href="#menu-toolbar">View Full Menu &#8595;</a></p>
+    </section>
+
     <!--Product-grid-->
-    <div class="container">
+    <div class="container" id="menu-toolbar">
+        <div class="section-divider"><span>&#10022;</span> Our Full Menu</div>
         <h2>Our Menu</h2>
-        <h3>Check out our list of delightful and mouth-watering delicacies that will enlighten your taste buds</h3> <br>
-        <div class="grid">
-            <div class="card">
+        <h3>Check out our list of delightful and mouth-watering delicacies that will enlighten your taste buds</h3>
+
+        <div class="menu-search-wrap">
+            <span class="menu-search-icon" aria-hidden="true">&#8981;</span> <br>
+            <input type="search" id="menu-search" class="menu-search" placeholder="Search our menu&hellip;" aria-label="Search our menu">
+        </div>
+
+        <div class="menu-categories" id="menu-categories" role="tablist" aria-label="Filter menu by category">
+            <button type="button" class="menu-category active" data-category="all">All</button>
+            <button type="button" class="menu-category" data-category="breads">Breads</button>
+            <button type="button" class="menu-category" data-category="cakes">Cakes</button>
+            <button type="button" class="menu-category" data-category="cupcakes">Cupcakes</button>
+            <button type="button" class="menu-category" data-category="pastries">Pastries</button>
+            <button type="button" class="menu-category" data-category="cookies">Cookies</button>
+            <button type="button" class="menu-category" data-category="desserts">Desserts</button>
+            <button type="button" class="menu-category" data-category="savory">Savory</button>
+        </div>
+        <p class="menu-empty-state" id="menu-empty-state" hidden>No treats match your search &mdash; try a different word or category.</p>
+
+        <div class="grid" id="menu-grid">
+            <div class="card" data-category="cookies">
                 <img src="https://i.pinimg.com/1200x/9d/81/b5/9d81b5fc0754c3b4e1a03e630c91eafd.jpg" alt="Macaroons" loading="lazy">
                 <h3>Macaroons</h3>
                 <p>Delicate French cookies with a creamy filling.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="breads">
                 <img src="https://i.pinimg.com/1200x/63/67/9e/63679e1ec0910c3dd861c0fd9eab940c.jpg" alt="Muffin" loading="lazy">
                 <h3>Blueberry Muffin</h3>
                 <p>Moist muffin bursting with fresh blueberries.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="pastries">
                 <img src="https://i.pinimg.com/1200x/da/4b/92/da4b92ed95376a48840b2001e3d67180.jpg" alt="Tart" loading="lazy">
                 <h3>Lemon Tart</h3>
                 <p>Tangy lemon curd in a crisp pastry shell.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="desserts">
                 <img src="https://i.pinimg.com/736x/a8/fe/77/a8fe7731278a61c513be9cc9d30512c9.jpg" alt="Cheesecake" loading="lazy">
+                <span class="card-badge card-badge-best-seller">&#9733; Best Seller</span>
                 <h3>Cheesecake</h3>
                 <p>Creamy and rich, a perfect dessert indulgence.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="desserts">
                 <img src="https://i.pinimg.com/736x/d1/4e/a0/d14ea027bcaf827de75bd1cfcbc3fc32.jpg" alt="Brownies" loading="lazy">
                 <h3>Brownies</h3>
                 <p>Fudgy and chocolatey, a classic treat.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="desserts">
                 <img src="https://i.pinimg.com/1200x/4b/70/44/4b704448f408deb438903cb67e0b2620.jpg" alt="Apple pie" loading="lazy">
                 <h3>Apple Pie</h3>
                 <p>Traditional pie with a flaky crust and spiced apple filling.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="pastries">
                 <img src="https://i.pinimg.com/1200x/53/f9/7b/53f97be812da8db577ff2e73f1aa4827.jpg" alt="Cinnamon Roll" loading="lazy">
                 <h3>Cinnamon Roll</h3>
                 <p>Soft roll swirled with cinnamon and topped with icing.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="pastries">
                 <img src="https://i.pinimg.com/1200x/b6/06/65/b6066589eded87a60755a7c114bd453e.jpg" alt="Eclair" loading="lazy">
                 <h3>Eclair</h3>
                 <p>Choux pastry filled with cream and topped with chocolate icing.</p>
@@ -97,176 +154,295 @@
             </div>
 
             
-            <div class="card">
+            <div class="card" data-category="cookies">
                 <img src="https://i.pinimg.com/1200x/1a/71/8d/1a718dc7292d2609d50b069e8ae4cbcf.jpg" alt="Shortbread" loading="lazy">
                 <h3>Shortbread</h3>
                 <p>Buttery and crumbly cookie, perfect with tea or coffee.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="desserts">
                 <img src="https://i.pinimg.com/736x/26/75/d7/2675d71396d515785595ec4f641be2f5.jpg" alt="Crème Brûlée" loading="lazy">
                 <h3>Crème brûlée</h3>
                 <p>Rich custard base topped with a contrasting layer of hard caramel.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="desserts">
                 <img src="https://i.pinimg.com/736x/0e/c2/89/0ec289492947872976c5c52215280faa.jpg" alt="Tiramisu" loading="lazy">
+                <span class="card-badge card-badge-best-seller">&#9733; Best Seller</span>
                 <h3>Tiramisu</h3>
                 <p>Classic Italian dessert with layers of coffee-soaked ladyfingers and cheese.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="pastries">
                 <img src="https://i.pinimg.com/1200x/4a/07/d4/4a07d4edd2e3822f68a064fa8db9a0c5.jpg" alt="Lobster Tail" loading="lazy">
                 <h3>Lobster Tail</h3>
                 <p>Flaky pastry filled with sweet custard cream, topped with powdered sugar.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="pastries">
                 <img src="https://i.pinimg.com/1200x/f6/a3/87/f6a38762f36956b5da6b6c467c1c1a39.jpg" alt="Filipino Cheesebars" loading="lazy">
                 <h3>Filipino Cheesebars</h3>
                 <p>Buttery pastry crust topped with a creamy cheese filling.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="savory">
                 <img src="https://i.pinimg.com/1200x/8e/8f/69/8e8f693788211b5405f3fc07dd083583.jpg" alt="Pepperoni Pizza" loading="lazy">
                 <h3>Pepperoni Pizza</h3>
                 <p>Classic pizza topped with spicy pepperoni slices and melted cheese.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="pastries">
                 <img src="https://i.pinimg.com/736x/a2/4e/0f/a24e0f4865370ee868257f0a4ecd978a.jpg" alt="Doughnut" loading="lazy">
                 <h3>Doughnut</h3>
                 <p>Soft, fluffy, and topped with creamy frosting.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="cupcakes">
                 <img src="https://i.pinimg.com/1200x/9b/98/c7/9b98c7ec8a35300f627cad7047c9563e.jpg" alt="Red Velvet Cupcake" loading="lazy">
                 <h3>Red Velvet Cupcake</h3>
                 <p>Moist red velvet cake topped with rich cream cheese frosting.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
-            <div class="card">
+            <div class="card" data-category="breads">
                 <img src="https://i.pinimg.com/736x/46/08/f4/4608f446a7c867ede2f6f4d14ca31d78.jpg" alt="Scone" loading="lazy">
                 <h3>Scone</h3>
                 <p>Classic British treat, crumbly and perfect with jam and cream.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
-            <div class="card">
+            <div class="card" data-category="desserts">
                 <img src="https://i.pinimg.com/1200x/c9/06/73/c9067318a57de726e714aa42b0423d3b.jpg" alt="Pecan Pie" loading="lazy">
                 <h3>Pecan Pie</h3>
                 <p>Sweet and nutty pie with a gooey pecan filling in a flaky crust.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
-            <div class="card">
+            <div class="card" data-category="pastries">
                 <img src="https://i.pinimg.com/736x/5f/3a/4f/5f3a4f236e69ce77990fffb1545a11f0.jpg" alt="Baklava" loading="lazy">
                 <h3>Baklava</h3>
                 <p>Layers of filo pastry, nuts, and honey syrup, a Mediterranean delight.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
-            <div class="card">
+            <div class="card" data-category="pastries">
                 <img src="https://i.pinimg.com/1200x/a3/ae/16/a3ae16fa11ddda988b7fdc9553995529.jpg" alt="Fruit Danish" loading="lazy">
                 <h3>Fruit Danish</h3>
                 <p>Buttery pastry topped with sweet fruit and glaze.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
-            <div class="card">
+            <div class="card" data-category="cakes">
                 <img src="https://i.pinimg.com/1200x/a2/76/7a/a2767a2a3bd6bbf36a27dff85cd81d27.jpg" alt="Opera Cake" loading="lazy">
+                <span class="card-badge card-badge-staff-pick">Staff Pick</span>
                 <h3>Opera Cake</h3>
                 <p>Elegant French cake with layers of almond sponge, coffee, and chocolate.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
-            <div class="card">
+            <div class="card" data-category="pastries">
                 <img src="https://i.pinimg.com/1200x/90/12/bb/9012bb43f36495c1b13aa5862fa9159a.jpg" alt="Profiterole" loading="lazy">
                 <h3>Profiterole</h3>
                 <p>Choux pastry balls filled with cream and topped with chocolate sauce.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="breads">
                 <img src="https://i.pinimg.com/1200x/7c/e9/02/7ce90234e6f34e5285a424cbf2f97534.jpg" alt="Bakery Scone" loading="lazy">
                 <h3>Raspberry Scone</h3>
                 <p>Buttery, crumbly scone bursting with fresh raspberries.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="pastries">
                 <img src="https://i.pinimg.com/736x/92/69/f5/9269f546bc680995d5c446a6cafd4d5b.jpg" alt="Napoleon" loading="lazy">
                 <h3>Napoleon (Mille-feuille)</h3>
                 <p>Layers of puff pastry and pastry cream, topped with fondant icing.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="desserts">
                 <img src="https://i.pinimg.com/1200x/52/e0/00/52e0009104b2d451159ffaf9bf4a94f6.jpg" alt="Pavlova" loading="lazy">
+                <span class="card-badge card-badge-new">New</span>
                 <h3>Pavlova</h3>
                 <p>Light meringue dessert topped with whipped cream and fresh fruit.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="cakes">
                 <img src="https://i.pinimg.com/736x/d4/8d/a2/d48da2917a6a2e5b707091a98b1a4e66.jpg" alt="Black Forest Cake" loading="lazy">
+                <span class="card-badge card-badge-best-seller">&#9733; Best Seller</span>
                 <h3>Black Forest Cake</h3>
                 <p>Chocolate sponge cake layered with cherries and whipped cream.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="cookies">
                 <img src="https://i.pinimg.com/1200x/f1/bb/92/f1bb92a2a323926a8180e4ecfb210c4d.jpg" alt="Almond Biscotti" loading="lazy">
                 <h3>Almond Biscotti</h3>
                 <p>Crunchy Italian cookies, perfect for dipping in coffee.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="cakes">
                 <img src="https://i.pinimg.com/736x/23/1e/c1/231ec124c7f2ff4a30b25693fc516b59.jpg" alt="Pumpkin Roll" loading="lazy">
                 <h3>Pumpkin Roll</h3>
                 <p>Spiced pumpkin cake rolled with sweet cream cheese filling.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="cakes">
                 <img src="https://i.pinimg.com/736x/a9/ac/2a/a9ac2abc6091325d15dbb24780ca4e9b.jpg" alt="Opera Slice" loading="lazy">
                 <h3>Opera Slice</h3>
                 <p>Elegant French dessert with almond sponge, coffee, and chocolate layers.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="desserts">
                 <img src="https://i.pinimg.com/1200x/56/04/0c/56040ccb1bbd2f7f700953e1e7e71265.jpg" alt="Lemon Meringue Pie" loading="lazy">
                 <h3>Lemon Meringue Pie</h3>
                 <p>Tart lemon filling topped with fluffy, toasted meringue.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="pastries">
                 <img src="https://i.pinimg.com/736x/17/b0/33/17b0339020698983f2a68d647527629b.jpg" alt="Strudel" loading="lazy">
                 <h3>Strudel</h3>
                 <p>Thin layers of pastry filled with spiced apples and raisins.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="cakes">
                 <img src="https://i.pinimg.com/1200x/ab/4a/e5/ab4ae58febbddfcc24a2539740847ae0.jpg" alt="Matcha Roll Cake" loading="lazy">
+                <span class="card-badge card-badge-new">New</span>
                 <h3>Matcha Roll Cake</h3>
                 <p>Light and fluffy green tea sponge cake rolled with sweet cream.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="desserts">
                 <img src="https://i.pinimg.com/736x/a1/fd/f9/a1fdf940f737d655f2881206b5790546.jpg" alt="Hazelnut Mousse" loading="lazy">
                 <h3>Hazelnut Mousse</h3>
                 <p>Creamy hazelnut mousse topped with chocolate shavings.</p>
                 <a href="contact.html" class="btn2">Order now</a>
             </div>
+            <div class="card" data-category="cupcakes">
+                <img src="https://i.pinimg.com/1200x/d1/9a/6f/d19a6fb1ddc1d57eb26fc585dfa4e0e6.jpg" alt="Cupcake" loading="lazy">
+                <h3>Vanilla Cupcake</h3>
+                <p>Soft, fluffy, and topped with creamy frosting.</p>
+                <a href="contact.html" class="btn2">Order now</a>
+            </div>
+
+            <div class="card" data-category="breads">
+                <img src="https://i.pinimg.com/736x/ce/e0/5d/cee05d957fdebfa57ba4175bce35a595.jpg" alt="Bread" loading="lazy">
+                <h3>Artisan Bread</h3>
+                <p>Crusty outside, soft inside, baked fresh daily.</p>
+                <a href="contact.html" class="btn2">Order now</a>
+            </div>
+
+            <div class="card" data-category="cakes">
+                <img src="https://i.pinimg.com/736x/04/b9/09/04b9090757e4b90c1f6ae91d3d08e0e8.jpg" alt="Cake" loading="lazy">
+                <h3>Chocolate Cake</h3>
+                <p>Rich, moist, and indulgent for every celebration.</p>
+                <a href="contact.html" class="btn2">Order now</a>
+            </div>
+
+            <div class="card" data-category="cookies">
+                <img src="https://i.pinimg.com/736x/68/88/39/688839bbf0e7442c03ff1c543d23b608.jpg" alt="Chocolate Chip Cookie" loading="lazy">
+                <h3>Chocolate Chip Cookie</h3>
+                <p>Classic treat with gooey chocolate chips.</p>
+                <a href="contact.html" class="btn2">Order now</a>
+            </div>
+
+            <div class="card" data-category="pastries">
+                <img src="https://i.pinimg.com/1200x/b3/f9/8a/b3f98ae0b6710dcc419a8b3e476b4f3d.jpg" alt="Crossaint" loading="lazy">
+                <h3>Butter Croissant</h3>
+                <p>Flaky, buttery layers perfect for breakfast.</p>
+                <a href="contact.html" class="btn2">Order now</a>
+            </div>
+
+            <div class="card" data-category="desserts">
+                <img src="https://i.pinimg.com/1200x/33/cf/15/33cf15ad39cc509e93c8499956c8f016.jpg" alt="Ice-cream" loading="lazy">
+                <h3>Ice Cream</h3>
+                <p>Creamy and refreshing, available in various flavors.</p>
+                <a href="contact.html" class="btn2">Order now</a>
+            </div>
+
+            <div class="card" data-category="cookies">
+                <img src="https://i.pinimg.com/1200x/29/65/a7/2965a783cfe8ab0174ede6ac5c740de1.jpg" alt="Butter biscuit" loading="lazy">
+                <h3>Butter Biscuit</h3>
+                <p>Buttery, flaky, and perfect with jam or honey.</p>   
+                <a href="contact.html" class="btn2">Order now</a>
+            </div>
+
+            <div class="card" data-category="pastries">
+                <img src="https://i.pinimg.com/736x/b8/78/07/b878070d347ee1978ce35657d07c8dda.jpg" alt="Cannoli" loading="lazy">
+                <h3>Cannoli</h3>
+                <p>Crispy shell filled with sweet ricotta cream.</p>
+                <a href="contact.html" class="btn2">Order now</a>
+            </div>
+
+            <div class="card" data-category="pastries">
+                <img src="https://i.pinimg.com/1200x/0d/d2/34/0dd23401be98db9a4d48b89ca6d74a64.jpg" alt="Blueberry pie" loading="lazy">
+                <h3>Blueberry Pie</h3>
+                <p>Sweet and tangy blueberries in a flaky crust.</p>
+                <a href="contact.html" class="btn2">Order now</a>
+            </div>
+
+            <div class="card" data-category="breads">
+                <img src="https://i.pinimg.com/1200x/46/54/01/4654017105191c95e6a30ee0bb64f6b7.jpg" alt="Sourdough" loading="lazy">
+                <h3>Sourdough</h3>
+                <p>Tangy, chewy, and naturally fermented</p>
+                <a href="contact.html" class="btn2">Order now</a>
+            </div>
+
+            <div class="card" data-category="breads">
+                <img src="https://i.pinimg.com/736x/c0/6a/2e/c06a2ebe8517beca98d601f412d46363.jpg" alt="Brioche" loading="lazy">
+                <h3>Brioche</h3>
+                <p>Soft, buttery, and slightly sweet bread perfect for any occasion.</p>
+                <a href="contact.html" class="btn2">Order now</a>
+            </div>
+
+            <!-- <div class="card" data-category="cupcakes">
+                <img src="https://i.pinimg.com/1200x/eb/75/50/eb7550da8262bba102c348abdd9c92c2.jpg" alt="Chocolate Cupcake" loading="lazy">
+                <h3>Chocolate Cupcake</h3>
+                <p>Rich, moist, and topped with decadent chocolate frosting.</p>
+                <a href="contact.html" class="btn2">Order now</a>
+            </div> -->
         </div>
     </div>
+
+    <!--Why Sweet Crumbs strip-->
+    <section class="why-strip">
+        <div class="section-divider section-divider-light"><span>&#10022;</span> Why Sweet Crumbs?</div>
+        <div class="why-grid">
+            <div class="why-item">
+                <span class="why-icon" aria-hidden="true">&#10022;</span>
+                <span>Baked Fresh Daily</span>
+            </div>
+            <div class="why-item">
+                <span class="why-icon" aria-hidden="true">&#10022;</span>
+                <span>Quality Ingredients</span>
+            </div>
+            <div class="why-item">
+                <span class="why-icon" aria-hidden="true">&#10022;</span>
+                <span>Nationwide Delivery</span>
+            </div>
+            <div class="why-item">
+                <span class="why-icon" aria-hidden="true">&#10022;</span>
+                <span>Made With Care</span>
+            </div>
+        </div>
+    </section>
+
+    <!--Custom order CTA-->
+    <section class="menu-cta">
+        <h2>Need Something Custom?</h2>
+        <p>Wedding cakes, birthday orders, or a flavor you don't see here &mdash; our bakers can make it happen.</p>
+        <a href="contact.html" class="btn2">Contact Our Bakers</a>
+    </section>
+
 <!--Product-details-modal-->
 <div class="modal-overlay" id="product-modal" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -337,6 +513,11 @@
             <h4>Delivery &amp; Hours</h4>
             <p>We deliver nationwide across Nigeria &mdash; fees vary by state.<br>Free delivery within Lagos on orders over <span id="footer-delivery-amount">$40</span>.</p>
             <p>Mon&ndash;Sat: 7:00 AM &ndash; 7:00 PM<br>Sun: 8:00 AM &ndash; 3:00 PM</p>
+            <ul>
+                <li>Kenny</li>
+                <li>Hanny</li>
+
+            </ul>
         </div>
     </div>
 
@@ -538,6 +719,15 @@
         <button type="button" class="btn2 cart-checkout-btn" id="continue-shopping-btn">Continue Shopping</button>
     </div>
 </aside>
+
+<!--Floating cart indicator-->
+<button type="button" class="floating-cart" id="floating-cart" hidden aria-label="View your order">
+    <span class="floating-cart-icon" aria-hidden="true">&#128717;</span>
+    <span class="floating-cart-text">
+        <span id="floating-cart-count">0 items</span>
+        <span id="floating-cart-total"></span>
+    </span>
+</button>
 
 </body>
 </html>

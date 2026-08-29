@@ -40,7 +40,10 @@ const productData = {
     "Lemon Meringue Pie": { price: "$26.00", desc: "A tart lemon custard filling piled high with fluffy Italian meringue and lightly toasted." },
     "Strudel": { price: "$6.00", desc: "Thin, hand-stretched pastry wrapped around spiced apples, raisins, and a touch of cinnamon." },
     "Matcha Roll Cake": { price: "$6.75", desc: "A delicately spongy green tea roll cake filled with lightly sweetened whipped cream." },
-    "Hazelnut Mousse": { price: "$6.50", desc: "A light, airy hazelnut mousse layered over chocolate sponge and topped with toasted hazelnut shavings." }
+    "Hazelnut Mousse": { price: "$6.50", desc: "A light, airy hazelnut mousse layered over chocolate sponge and topped with toasted hazelnut shavings." },
+    "Sourdough": { price: "$18", desc: "A classic sourdough loaf with a crisp crust and a chewy, flavorful interior." },
+    "Brioche": { price: "$12", desc: "A soft, buttery French bread with a tender crumb, perfect for breakfast or as a base for decadent sandwiches." }
+    "Chocolate Cupcake": { price: "$5", desc: "Pure chocolate bliss in every bite. Our signature deep-cocoa sponge is incredibly moist, tender, and baked fresh daily. We crown each one with a velvety swirl of rich chocolate buttercream and a scatter of decadent chocolate curls. It is the ultimate treat for true chocoholics." }
 };
 
 // ---- Formspree endpoint
@@ -50,12 +53,7 @@ const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mvkpygyk';
 const FREE_DELIVERY_THRESHOLD = 40;
 let cart = []; // { name, price (number, always stored in USD), qty, note, img }
 
-/* =========================================================
-   Nigeria delivery pricing — tiered by distance from our
-   Lagos bakery, closest to farthest. Fees are stored in USD
-   (same base currency as everything else) and converted for
-   display by formatMoney(). Covers all 36 states + the FCT.
-   ========================================================= */
+//Delivery tiers for all states 
 const NIGERIA_DELIVERY_TIERS = [
     {
         id: 'lagos',
@@ -229,6 +227,52 @@ async function fetchExchangeRate() {
     }
 }
 
+// ---- Menu page: search + category filters (only runs where #menu-grid exists) ----
+function initMenuFilters() {
+    const grid = document.getElementById('menu-grid');
+    const searchInput = document.getElementById('menu-search');
+    const categoryBar = document.getElementById('menu-categories');
+    const emptyState = document.getElementById('menu-empty-state');
+    if (!grid) return; // page has no filterable menu grid
+
+    const cards = Array.from(grid.querySelectorAll('.card'));
+    let activeCategory = 'all';
+
+    function applyFilters() {
+        const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const category = card.getAttribute('data-category') || '';
+            const name = (card.querySelector('h3')?.textContent || '').toLowerCase();
+            const desc = (card.querySelector('p')?.textContent || '').toLowerCase();
+
+            const matchesCategory = activeCategory === 'all' || category === activeCategory;
+            const matchesSearch = !query || name.includes(query) || desc.includes(query);
+            const isVisible = matchesCategory && matchesSearch;
+
+            card.hidden = !isVisible;
+            if (isVisible) visibleCount += 1;
+        });
+
+        if (emptyState) emptyState.hidden = visibleCount !== 0;
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', applyFilters);
+    }
+
+    if (categoryBar) {
+        categoryBar.querySelectorAll('.menu-category').forEach(btn => {
+            btn.addEventListener('click', () => {
+                activeCategory = btn.getAttribute('data-category') || 'all';
+                categoryBar.querySelectorAll('.menu-category').forEach(b => b.classList.toggle('active', b === btn));
+                applyFilters();
+            });
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
@@ -309,6 +353,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initProductModal();
     initCart();
     initCurrencyToggle();
+    initMenuFilters();
     fetchExchangeRate();
 });
 
@@ -599,6 +644,17 @@ function initCart() {
         totalEl.textContent = formatMoney(total);
         checkoutBtn.disabled = cart.length === 0 || !tier;
 
+        if (floatingCartBtn) {
+            if (cart.length === 0 || panel.classList.contains('open')) {
+                floatingCartBtn.hidden = true;
+            } else {
+                floatingCartBtn.hidden = false;
+                document.getElementById('floating-cart-count').textContent =
+                    `${itemCount} item${itemCount === 1 ? '' : 's'}`;
+                document.getElementById('floating-cart-total').textContent = formatMoney(subtotal);
+            }
+        }
+
         if (!cart.length) {
             deliveryHintEl.textContent = '';
         } else if (!tier) {
@@ -647,9 +703,9 @@ function initCart() {
     function openPanel() {
         lastFocusedEl = document.activeElement;
         showView('cart');
-        renderCart();
         backdrop.classList.add('open');
         panel.classList.add('open');
+        renderCart();
         panel.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
         document.addEventListener('keydown', handlePanelKeydown);
@@ -663,6 +719,7 @@ function initCart() {
         document.body.style.overflow = '';
         document.removeEventListener('keydown', handlePanelKeydown);
         if (lastFocusedEl) lastFocusedEl.focus();
+        renderCart(); // let the floating cart indicator reappear if there are items
     }
 
     function handlePanelKeydown(e) {
@@ -885,6 +942,11 @@ function initCart() {
     backdrop.addEventListener('click', closePanel);
     continueShoppingBtn.addEventListener('click', closePanel);
 
+    const floatingCartBtn = document.getElementById('floating-cart');
+    if (floatingCartBtn) {
+        floatingCartBtn.addEventListener('click', openPanel);
+    }
+
     renderCart();
 
     // Re-renders every price currently on screen in the cart panel — the
@@ -922,10 +984,15 @@ function addToCart(newItem) {
         cart.push(newItem);
     }
 
-    const badge = document.getElementById('cart-badge');
-    if (badge) {
-        const itemCount = cart.reduce((sum, item) => sum + item.qty, 0);
-        badge.textContent = itemCount;
+    // Re-render the cart badge, panel (if open), and floating cart indicator.
+    if (window.refreshCartDisplay) {
+        window.refreshCartDisplay();
+    } else {
+        const badge = document.getElementById('cart-badge');
+        if (badge) {
+            const itemCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            badge.textContent = itemCount;
+        }
     }
 }
 
